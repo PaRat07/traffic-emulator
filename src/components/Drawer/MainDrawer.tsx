@@ -6,36 +6,11 @@ import { Link, useLocation } from "react-router-dom";
 import HomeIcon from '@mui/icons-material/Home';
 import HomeIconOutlined from '@mui/icons-material/HomeOutlined';
 
-import PeopleIcon from '@mui/icons-material/PeopleOutline';
-import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActualOutlined';
-import PublicIcon from '@mui/icons-material/PublicOutlined';
-import SettingsEthernetIcon from '@mui/icons-material/SettingsEthernetOutlined';
-import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponentOutlined';
-import PaletteOutlinedIcon from '@mui/icons-material/PaletteOutlined';
-import PaletteTwoToneIcon from '@mui/icons-material/Palette';
+import SettingIconOutlined from "@mui/icons-material/SettingsOutlined";
+import SettingIconFilled from "@mui/icons-material/Settings";
 
 const MainDrawer: FC<DrawerProps> = (props) => {
     const { onClose, ...others } = props;
-
-    const categories = [
-        {
-            id: 'Build',
-            children: [
-                {
-                    id: 'Authentication',
-                    icon: <PeopleIcon />,
-                },
-                { id: 'Database', icon: <PeopleIcon /> },
-                { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-                { id: 'Hosting', icon: <PublicIcon /> },
-                { id: 'Functions', icon: <SettingsEthernetIcon /> },
-                {
-                    id: 'Machine learning',
-                    icon: <SettingsInputComponentIcon />,
-                },
-            ],
-        },
-    ];
 
     const location = useLocation();
     const [selectedIndex, setSelectedIndex] = useState(location.pathname.replace('/', ''));
@@ -67,11 +42,11 @@ const MainDrawer: FC<DrawerProps> = (props) => {
                         </ListItemButton>
                     </ListItem>
                     <ListItem >
-                        <ListItemButton component={Link} to='/ColorSystem' selected={selectedIndex == 'ColorSystem'} onClick={() => handleListItemClick('ColorSystem')}>
+                        <ListItemButton component={Link} to='/Settings' selected={selectedIndex == 'ColorSystem'} onClick={() => handleListItemClick('ColorSystem')}>
                             <ListItemIcon>
-                                {selectedIndex == 'ColorSystem' ? <PaletteTwoToneIcon /> : <PaletteOutlinedIcon />}
+                                {selectedIndex == 'ColorSystem' ? <SettingIconFilled/> : <SettingIconOutlined/>}
                             </ListItemIcon>
-                            <ListItemText>Color System</ListItemText>
+                            <ListItemText>Settings</ListItemText>
                         </ListItemButton>
                     </ListItem>
                     {/*<ListItem >
@@ -83,25 +58,6 @@ const MainDrawer: FC<DrawerProps> = (props) => {
                         </ListItemButton>
                     </ListItem>*/}
                 </Box>
-                {categories.map(({ id, children }) => (
-                    <Box key={id}>
-                        <ListItem sx={{ py: 2, px: 3 }}>
-                            <ListItemText sx={{ fontWeight: 'bold' }}>
-                                <Typography color="inherit" sx={{ ml: 1, fontSize: 15, fontWeight: 500 }} >
-                                    {id}
-                                </Typography>
-                            </ListItemText>
-                        </ListItem>
-                        {children.map(({ id: childId, icon }) => (
-                            <ListItem key={childId}>
-                                <ListItemButton selected={selectedIndex == childId} onClick={() => handleListItemClick(childId)}>
-                                    <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText>{childId}</ListItemText>
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
-                    </Box>
-                ))}
             </List>
         </Drawer>
     );

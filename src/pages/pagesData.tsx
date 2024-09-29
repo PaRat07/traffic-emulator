@@ -1,6 +1,5 @@
 import { routerType } from "../types/router.types";
-import About from "./About/About";
-import ColorSystem from "./ColorSystem/ColorSystem";
+import Settings from "./Settings/Settings.tsx";
 import Home from "./Home/Home";
 
 const pagesData: routerType[] = [
@@ -10,14 +9,9 @@ const pagesData: routerType[] = [
         title: "Home",
     },
     {
-        path: "ColorSystem",
-        element: <ColorSystem />,
-        title: "Color System"
-    },
-    {
-        path: "About",
-        element: <About />,
-        title: "about"
+        path: "Settings",
+        element: <Settings />,
+        title: "Settings"
     }
 ];
 
