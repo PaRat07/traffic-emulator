@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [
     progress(),
     react(),
-  ]
+  ],
+  server: {
+    host: true
+  }
 })
