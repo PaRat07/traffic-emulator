@@ -12,3 +12,4 @@ RUN mkdir ./build
 WORKDIR ./build
 RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg-master/scripts/buildsystems/vcpkg.cmake
 RUN cmake --build .
+CMD /home/build/test_backend_traffic_emulator
