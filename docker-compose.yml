@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  backend:
+    build: backend/
+    ports:
+      - 1234:1234
+    command: /home/build/test_backend_traffic_emulator
+  frontend:
+    build: frontend/
+    ports:
+      - 1234:1234
+      - 5173:5173
+    command: npm run dev
+
+  

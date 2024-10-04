@@ -1,6 +1,14 @@
-FROM ubuntu:18.04
-RUN apt-get update && apt-get install -y sudo build-essential git cmake curl unzip tar
+FROM ubuntu:latest
+RUN apt update && apt -y upgrade && apt install -y build-essential cmake tar wget curl zip git pkg-config
 WORKDIR /home
-RUN git clone https://github.com/Microsoft/vcpkg.git
-WORKDIR /home/vcpkg
-RUN ./bootstrap-vcpkg.sh
+RUN wget -O /tmp/vcpkg.tar.gz https://github.com/microsoft/vcpkg/archive/master.tar.gz
+RUN tar xf /tmp/vcpkg.tar.gz -C /opt
+RUN /opt/vcpkg-master/bootstrap-vcpkg.sh
+RUN ln -s /opt/vcpkg-master/vcpkg /usr/local/bin/vcpkg
+COPY ./vcpkg.json ./vcpkg-configuration.json .
+RUN vcpkg install
+COPY . .
+RUN mkdir ./build
+WORKDIR ./build
+RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg-master/scripts/buildsystems/vcpkg.cmake
+RUN cmake --build .
