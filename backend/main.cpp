@@ -1,7 +1,6 @@
 #include <httplib.h>
 #include <format>
 
-
 static auto beg_time = std::chrono::steady_clock::now();
 
 std::string GetContent() {
@@ -12,8 +11,8 @@ std::string GetContent() {
     "cars" : [
         {
             "pos" : {
-                        "x" : ")" + std::to_string(time_gone / 30 % 1000) + R"(",
-                        "y" : "1"
+                        "x" : ")" + std::to_string(200) + R"(",
+                        "y" : "200"
             },
             "direction" : "1.0"
         }
@@ -39,7 +38,6 @@ int main() {
         beg_time = std::chrono::steady_clock::now();
         res.set_content("", "text/plain");
     });
-
 
     svr.set_post_routing_handler([](const auto& req, auto& res) {
         static auto prev_req = std::chrono::steady_clock::now();
