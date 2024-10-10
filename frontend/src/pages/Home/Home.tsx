@@ -2,7 +2,7 @@ import {Stack, ToggleButton, ToggleButtonGroup, Typography} from '@mui/material'
 import React, {useEffect, useState} from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import crossroadPath from '../../assets/crossroad.jpg'
-import carPath from '../../assets/car.webp'
+import carPath from '../../assets/Car.png'
 
 const throttle = (fn: Function, wait: number = 300) => {
     let inThrottle: boolean,
@@ -61,7 +61,7 @@ const Home = () => {
         const resp = (await (await fetch("http://localhost:1234/cars")).json()) as Response;
         ctx.clearRect(0, 0, 800, 600);
         ctx.drawImage(crossroadImage, 0, 0);
-        ctx.drawImage(carImage, resp.cars.pos.x, resp.cars.pos.y, carImage.width / 10, carImage.height / 10);
+        ctx.drawImage(carImage, resp.cars.pos.x, resp.cars.pos.y, carImage.width / 4, carImage.height / 4);
         ctx.fillStyle = resp.left_up_light_color;
         ctx.beginPath();
         ctx.arc(0, 0, 20, 0, 2 * Math.PI);
