@@ -1,18 +1,21 @@
 #include <httplib.h>
 #include <format>
+#include "Cars/Cars.h"
+#include "Process/CreateCars.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
 
 std::string GetContent() {
     auto cur_time = std::chrono::steady_clock::now();
     auto time_gone = std::chrono::duration_cast<std::chrono::milliseconds>(cur_time - beg_time).count();
-    return R"(
-{
+    std::string res;
+    res += R"(
+    {
     "cars" : 
         {
             "pos" : {
-                        "x" : )" + std::to_string(200) + R"(,
-                        "y" : 200
+                        "x" : )" + std::to_string(Cars::cars[0].car_settings.position_x) + R"(,
+                        "y" : )" + std::to_string(Cars::cars[0].car_settings.position_y) + R"(
             },
             "direction" : "1.0"
         }
@@ -21,11 +24,23 @@ std::string GetContent() {
     "left_down_light_color" : "green",
     "right_up_light_color" : "green",
     "right_down_light_color" : "green"
-}
-)";
+    }
+    )";
+    Cars::UpdateCars();
+    return res;
 }
 
 int main() {
+
+    Car new_car;
+    new_car.car_settings.speed = 3;
+    new_car.car_turn = CarSettings::Turn::None;
+    new_car.car_direction = CarSettings::Direction::Down;
+    new_car.car_settings.position_x = 300;
+    new_car.car_settings.position_y = 0;
+
+    CreateCars::CreateOnCarType(new_car);
+
     using namespace httplib;
 
     Server svr;
