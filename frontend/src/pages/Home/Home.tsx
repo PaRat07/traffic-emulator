@@ -38,7 +38,7 @@ interface Car {
 }
 
 interface Response {
-    cars: Car,
+    cars: Car[],
     left_up_light_color: "red" | "yellow" | "green",
     left_down_light_color: "red" | "yellow" | "green",
     right_up_light_color: "red" | "yellow" | "green",
@@ -51,9 +51,7 @@ const Home = () => {
     const redrawRaw = async () => {
         if (canvas == null) return;
         const ctx = canvas.getContext("2d");
-        if (ctx === null) return;
-        console.log("Redraw is called");
-        
+        if (ctx === null) return;        
         const crossroadImage = new Image();
         crossroadImage.src = crossroadPath;
         const carImage = new Image();
@@ -61,27 +59,38 @@ const Home = () => {
         const resp = (await (await fetch("http://localhost:1234/cars")).json()) as Response;
         ctx.clearRect(0, 0, 800, 600);
         ctx.drawImage(crossroadImage, 0, 0);
-        ctx.drawImage(carImage, resp.cars.pos.x, resp.cars.pos.y, carImage.width / 10, carImage.height / 10);
+        resp.cars.map((car) => {
+          ctx.drawImage(carImage, car.pos.x, car.pos.y, carImage.width / 10, carImage.height / 10);
+        });
+        ctx.strokeStyle = "black";
         ctx.fillStyle = resp.left_up_light_color;
         ctx.beginPath();
-        ctx.arc(0, 0, 20, 0, 2 * Math.PI);
-        ctx.fill()
+        ctx.arc(250, 150, 20, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.arc(250, 150, 20, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fillStyle = resp.left_down_light_color;
         ctx.beginPath();
-        ctx.arc(0, 300, 20, 0, 2 * Math.PI);
-        ctx.fill()
+        ctx.arc(250, 350, 20, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.arc(250, 350, 20, 0, 2 * Math.PI);
+        ctx.stroke();
         ctx.fillStyle = resp.right_down_light_color;
         ctx.beginPath();
-        ctx.arc(600, 300, 20, 0, 2 * Math.PI);
+        ctx.arc(450, 350, 20, 0, 2 * Math.PI);
         ctx.fill()
+        ctx.arc(450, 350, 20, 0, 2 * Math.PI);
+        ctx.stroke()
         ctx.fillStyle = resp.right_up_light_color;
         ctx.beginPath();
-        ctx.arc(500, 0, 20, 0, 2 * Math.PI);
+        ctx.arc(450, 150, 20, 0, 2 * Math.PI);
         ctx.fill()
-        requestAnimationFrame(redraw);
+        ctx.arc(450, 150, 20, 0, 2 * Math.PI);
+        ctx.stroke()
+        requestAnimationFrame(redrawRaw);
     };
-    const redraw = throttle(redrawRaw, 0);
-    requestAnimationFrame(redraw);
+    // const redraw = throttle(redrawRaw, 0);
+    requestAnimationFrame(redrawRaw);
 
     return (
         <>

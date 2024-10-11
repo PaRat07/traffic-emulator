@@ -9,14 +9,22 @@ std::string GetContent() {
     return R"(
 {
     "cars" : 
+    [
         {
             "pos" : {
                         "x" : )" + std::to_string(200) + R"(,
                         "y" : 200
             },
             "direction" : "1.0"
+        },
+        {
+            "pos" : {
+                        "x" : 400,
+                        "y" : 200
+            },
+            "direction" : "1.0"
         }
-    ,
+    ],
     "left_up_light_color" : "green",
     "left_down_light_color" : "green",
     "right_up_light_color" : "green",
