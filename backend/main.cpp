@@ -1,52 +1,61 @@
 #include <httplib.h>
 #include <format>
+#include <vector>
+#include <sstream>
 #include "Cars/Cars.h"
 #include "Process/CreateCars.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
 
-std::string GetContent() {
-    auto cur_time = std::chrono::steady_clock::now();
-    auto time_gone = std::chrono::duration_cast<std::chrono::milliseconds>(cur_time - beg_time).count();
+std::string GetCars() {
+    std::vector<std::string> cars_data;
     std::string res;
-    res += R"(
-    {
-    "cars" : 
-        {
-            "pos" : {
-                        "x" : )" + std::to_string(Cars::cars[0].car_settings.position_x) + R"(,
-                        "y" : )" + std::to_string(Cars::cars[0].car_settings.position_y) + R"(
-            },
-            "direction" : "1.0"
+    for (size_t i = 0; i < Cars::cars.size(); ++i) {
+        std::string local_res;
+        local_res += R"(
+                {
+                    "pos" : {
+                        "x" : )" + std::to_string(Cars::cars[i].car_settings.position_x) + R"(,
+                                "y" : )" + std::to_string(Cars::cars[i].car_settings.position_y) + R"(
+                }, )";
+        local_res += R"( "direction" : "1.0" })";
+        if (i < Cars::cars.size() - 1) {
+            local_res += ",";
         }
-    ,
+        cars_data.push_back(local_res);
+    }
+    res += R"( {"cars" : [ )";
+    for (size_t i = 0; i < Cars::cars.size(); ++i) {
+        res += cars_data[i];
+    }
+    res += "],";
+    res += R"(
     "left_up_light_color" : "green",
     "left_down_light_color" : "green",
     "right_up_light_color" : "green",
     "right_down_light_color" : "green"
     }
     )";
+    // std::cout << res << '\n';
     Cars::UpdateCars();
     return res;
 }
 
 int main() {
+    const int WINDOW_X = 1498;
+    const int WINDOW_Y = 723;
+    using namespace CarSettings;
 
-    Car new_car;
-    new_car.car_settings.speed = 3;
-    new_car.car_turn = CarSettings::Turn::None;
-    new_car.car_direction = CarSettings::Direction::Down;
-    new_car.car_settings.position_x = 300;
-    new_car.car_settings.position_y = 0;
-
-    CreateCars::CreateOnCarType(new_car);
+    for (int i = 0; i < 6; ++i) {
+        CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
+    }
 
     using namespace httplib;
 
     Server svr;
 
     svr.Get("/cars", [](const Request& req, Response& res) {
-        res.set_content(GetContent(), "application/json");
+        res.set_content(GetCars(), "application/json");
     });
 
     svr.Get("/reset", [](const Request& req, Response& res) {
