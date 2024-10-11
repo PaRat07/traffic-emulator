@@ -52,11 +52,19 @@ void CreateCars::CreateRandomCar(const int& WINDOW_X,
             new_car.car_settings.position_y = WINDOW_Y / 2;
             break;
         case CarSettings::Direction::Up:
-            new_car.car_settings.position_x = WINDOW_X / 2;
+            if (new_car.car_settings.line == 0) {
+                new_car.car_settings.position_x = WINDOW_X / 2;
+            } else {
+                new_car.car_settings.position_x = WINDOW_X / 2 + 50;
+            }
             new_car.car_settings.position_y = 0;
             break;
         case CarSettings::Direction::Down:
-            new_car.car_settings.position_x = WINDOW_X / 2;
+            if (new_car.car_settings.line == 0) {
+                new_car.car_settings.position_x = WINDOW_X / 2 - 50;
+            } else {
+                new_car.car_settings.position_x = WINDOW_X / 2 - 100;
+            }
             new_car.car_settings.position_y = WINDOW_Y;
             break;
     }

@@ -4,8 +4,19 @@
 #include <sstream>
 #include "Cars/Cars.h"
 #include "Process/CreateCars.h"
+#include "Random.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
+
+const int WINDOW_X = 1498;
+const int WINDOW_Y = 723;
+
+void CAR() {
+    Cars::UpdateCars();
+    if (Random::mt() % 100 > 95) {
+        CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
+    }
+}
 
 std::string GetCars() {
     std::vector<std::string> cars_data;
@@ -37,18 +48,12 @@ std::string GetCars() {
     }
     )";
     // std::cout << res << '\n';
-    Cars::UpdateCars();
+    CAR();
     return res;
 }
 
 int main() {
-    const int WINDOW_X = 1498;
-    const int WINDOW_Y = 723;
     using namespace CarSettings;
-
-    for (int i = 0; i < 6; ++i) {
-        CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
-    }
 
     using namespace httplib;
 
@@ -71,7 +76,6 @@ int main() {
         res.set_header("Access-Control-Allow-Origin", "*");
         res.set_header("Access-Control-Allow-Headers", "*");
     });
-
 
     svr.listen("0.0.0.0", 1234);
 }
