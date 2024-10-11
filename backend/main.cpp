@@ -5,13 +5,25 @@
 #include "Cars/Cars.h"
 #include "Process/CreateCars.h"
 #include "Random.h"
+#include "TrafficLight/TrafficLight.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
+auto last_time = std::chrono::steady_clock::now();
 
 const int WINDOW_X = 1498;
 const int WINDOW_Y = 723;
 
 void CAR() {
+    auto cur = std::chrono::steady_clock::now();
+    auto e = std::chrono::duration_cast<std::chrono::seconds>(cur - last_time).count();
+    if (static_cast<int>(e) >= 3) {
+        TrafficLight::left_down_light.update_color();
+        TrafficLight::left_up_light.update_color();
+        TrafficLight::right_down_light.update_color();
+        TrafficLight::right_up_light.update_color();
+        last_time = cur;
+    }
+    // update light color
     Cars::UpdateCars();
     if (Random::mt() % 100 > 95) {
         CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
@@ -29,7 +41,7 @@ std::string GetCars() {
                         "x" : )" + std::to_string(Cars::cars[i].car_settings.position_x) + R"(,
                                 "y" : )" + std::to_string(Cars::cars[i].car_settings.position_y) + R"(
                 }, )";
-        local_res += R"( "direction" : "1.0" })";
+        local_res += R"( "direction" : )" + std::to_string(Cars::cars[i].car_settings.angle) + R"( })";
         if (i < Cars::cars.size() - 1) {
             local_res += ",";
         }
@@ -41,12 +53,13 @@ std::string GetCars() {
     }
     res += "],";
     res += R"(
-    "left_up_light_color" : "green",
-    "left_down_light_color" : "green",
-    "right_up_light_color" : "green",
-    "right_down_light_color" : "green"
-    }
-    )";
+    "left_up_light_color" : ")" + TrafficLight::left_up_light.get_light_color()
+    + R"(",
+    "left_down_light_color" : ")" + TrafficLight::left_down_light.get_light_color()
+    + R"(",
+    "right_up_light_color" : ")" + TrafficLight::right_up_light.get_light_color() + R"(",
+    "right_down_light_color" : ")" + TrafficLight::right_down_light.get_light_color()
+    + R"(" } )";
     // std::cout << res << '\n';
     CAR();
     return res;
