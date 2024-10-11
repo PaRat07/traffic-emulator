@@ -2,7 +2,7 @@
 
 namespace LightSettings {
     enum Color {
-        Red, Yellow, Green
+        Red, YellowUp, YellowDown, Green
     };
 
     enum Mode {

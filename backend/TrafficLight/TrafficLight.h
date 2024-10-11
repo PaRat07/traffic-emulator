@@ -3,7 +3,8 @@
 #include <vector>
 
 namespace TrafficLight {
-    extern std::vector<Light> lights;
-
-    extern std::vector<Light> get_lights();
+    extern Light left_up_light;
+    extern Light left_down_light;
+    extern Light right_up_light;
+    extern Light right_down_light;
 }
