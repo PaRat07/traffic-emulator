@@ -21,7 +21,9 @@ add_executable(${PROJECT_NAME} main.cpp
         UserSettings/UserCarSettings.h
         src/UserSettings/UserCarSettings.cpp
         Random.h
-        src/Random.cpp)
+        src/Random.cpp
+        Process/UpdateCars.h
+        src/Process/UpdateCars.cpp)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fno-stack-protector")
 
 find_package(httplib CONFIG REQUIRED)
