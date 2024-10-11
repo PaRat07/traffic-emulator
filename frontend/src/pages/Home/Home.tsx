@@ -65,27 +65,27 @@ const Home = () => {
         ctx.strokeStyle = "black";
         ctx.fillStyle = resp.left_up_light_color;
         ctx.beginPath();
-        ctx.arc(250, 150, 20, 0, 2 * Math.PI);
+        ctx.arc(560, 220, 20, 0, 2 * Math.PI);
         ctx.fill();
-        ctx.arc(250, 150, 20, 0, 2 * Math.PI);
+        ctx.arc(560, 220, 20, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fillStyle = resp.left_down_light_color;
         ctx.beginPath();
-        ctx.arc(250, 350, 20, 0, 2 * Math.PI);
+        ctx.arc(960, 220, 20, 0, 2 * Math.PI);
         ctx.fill();
-        ctx.arc(250, 350, 20, 0, 2 * Math.PI);
+        ctx.arc(960, 220, 20, 0, 2 * Math.PI);
         ctx.stroke();
         ctx.fillStyle = resp.right_down_light_color;
         ctx.beginPath();
-        ctx.arc(450, 350, 20, 0, 2 * Math.PI);
+        ctx.arc(560, 520, 20, 0, 2 * Math.PI);
         ctx.fill()
-        ctx.arc(450, 350, 20, 0, 2 * Math.PI);
+        ctx.arc(560, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
         ctx.fillStyle = resp.right_up_light_color;
         ctx.beginPath();
-        ctx.arc(450, 150, 20, 0, 2 * Math.PI);
+        ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.fill()
-        ctx.arc(450, 150, 20, 0, 2 * Math.PI);
+        ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
         requestAnimationFrame(redrawRaw);
     };
