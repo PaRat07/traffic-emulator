@@ -6,6 +6,7 @@
 #include "Process/CreateCars.h"
 #include "Random.h"
 #include "TrafficLight/TrafficLight.h"
+#include "Process/UpdateCars.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
 auto last_time = std::chrono::steady_clock::now();
@@ -24,7 +25,7 @@ void CAR() {
         last_time = cur;
     }
     // update light color
-    Cars::UpdateCars();
+    CarsUpdater::UpdateCars();
     if (Random::mt() % 100 > 95) {
         CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
     }
