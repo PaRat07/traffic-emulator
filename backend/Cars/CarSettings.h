@@ -7,8 +7,8 @@ namespace CarSettings {
         double angle = 0;
         int32_t dist_to_light = 0;
         int32_t speed = 0;
-        double position_x = 0;
-        double position_y = 0;
+        int32_t position_x = 0;
+        int32_t position_y = 0;
     };
 
     enum class Direction {
