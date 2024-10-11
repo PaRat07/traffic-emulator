@@ -7,8 +7,7 @@ class CreateCars {
 public:
     static void CreateCar(CarSettings::Settings, CarSettings::Direction, CarSettings::Turn);
 
-    static void CreateRandomCar(CarSettings::Direction, CarSettings::Turn,
-                                const double&, const double&, const double&);
+    static void CreateRandomCar(const int&, const int&);
 
     static void CreateOnCarType(Car);
 };
