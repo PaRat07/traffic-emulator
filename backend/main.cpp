@@ -7,6 +7,7 @@
 #include "Random.h"
 #include "TrafficLight/TrafficLight.h"
 #include "Process/UpdateCars.h"
+#include "Process/UpdateLights.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
 auto last_time = std::chrono::steady_clock::now();
@@ -16,15 +17,11 @@ const int WINDOW_Y = 723;
 
 void CAR() {
     auto cur = std::chrono::steady_clock::now();
-    auto e = std::chrono::duration_cast<std::chrono::seconds>(cur - last_time).count();
-    if (static_cast<int>(e) >= 3) {
-        TrafficLight::left_down_light.update_color();
-        TrafficLight::left_up_light.update_color();
-        TrafficLight::right_down_light.update_color();
-        TrafficLight::right_up_light.update_color();
+    auto get_time = std::chrono::duration_cast<std::chrono::seconds>
+            (cur - last_time).count();
+    if (LightsUpdater::UpdateLights(static_cast<int>(get_time))) {
         last_time = cur;
     }
-    // update light color
     CarsUpdater::UpdateCars();
     if (Random::mt() % 100 > 95) {
         CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
