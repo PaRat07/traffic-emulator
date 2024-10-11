@@ -6,13 +6,14 @@ static auto beg_time = std::chrono::steady_clock::now();
 std::string GetContent() {
     auto cur_time = std::chrono::steady_clock::now();
     auto time_gone = std::chrono::duration_cast<std::chrono::milliseconds>(cur_time - beg_time).count();
+    static int pos = 0;
     return R"(
 {
     "cars" : 
     [
         {
             "pos" : {
-                        "x" : )" + std::to_string(200) + R"(,
+                        "x" : )" + std::to_string(pos++) + R"(,
                         "y" : 200
             },
             "direction" : "1.0"
