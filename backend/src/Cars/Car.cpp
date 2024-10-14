@@ -18,3 +18,15 @@ Car::Car(CarSettings::Direction direction, CarSettings::Turn turn) {
     car_settings.speed = static_cast<int32_t>(Random::mt() % UserCarSettings::maximal_speed)
             + UserCarSettings::minimal_speed;
 }
+
+void Car::UpdatePosition() {
+    if (car_direction == CarSettings::Direction::Down) {
+        car_settings.position_y += car_settings.speed;
+    } else if (car_direction == CarSettings::Direction::Up) {
+        car_settings.position_y -= car_settings.speed;
+    } else if (car_direction == CarSettings::Direction::Left) {
+        car_settings.position_x -= car_settings.speed;
+    } else if (car_direction == CarSettings::Direction::Right) {
+        car_settings.position_x += car_settings.speed;
+    }
+}

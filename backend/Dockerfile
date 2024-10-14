@@ -13,3 +13,4 @@ WORKDIR ./build
 RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg-master/scripts/buildsystems/vcpkg.cmake -G Ninja
 RUN cmake --build .
 CMD /home/build/test_backend_traffic_emulator
+RUN apt install -y gdb
