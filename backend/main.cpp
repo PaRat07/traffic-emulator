@@ -1,12 +1,9 @@
 #include <httplib.h>
 #include <format>
-#include <vector>
 #include <sstream>
 #include "Cars/Cars.h"
-#include "Process/CreateCars.h"
 #include "Random.h"
 #include "TrafficLight/TrafficLight.h"
-#include "Process/UpdateCars.h"
 #include "Process/UpdateLights.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
@@ -15,6 +12,8 @@ auto last_time = std::chrono::steady_clock::now();
 const int WINDOW_X = 1498;
 const int WINDOW_Y = 723;
 
+Cars RoadCars{};
+
 void CAR() {
     auto cur = std::chrono::steady_clock::now();
     auto get_time = std::chrono::duration_cast<std::chrono::seconds>
@@ -22,31 +21,32 @@ void CAR() {
     if (LightsUpdater::UpdateLights(static_cast<int>(get_time))) {
         last_time = cur;
     }
-    CarsUpdater::UpdateCars();
-    if (Random::mt() % 100 > 95) {
-        CreateCars::CreateRandomCar(WINDOW_X, WINDOW_Y);
+    RoadCars.Update();
+    if (Random::mt() % 100 > 94) {
+        RoadCars.CreateRandomCar(WINDOW_X, WINDOW_Y);
     }
 }
 
 std::string GetCars() {
     std::vector<std::string> cars_data;
     std::string res;
-    for (size_t i = 0; i < Cars::cars.size(); ++i) {
+    std::vector<Car> cars = RoadCars.GetCars();
+    for (size_t i = 0; i < cars.size(); ++i) {
         std::string local_res;
         local_res += R"(
                 {
                     "pos" : {
-                        "x" : )" + std::to_string(Cars::cars[i].car_settings.position_x) + R"(,
-                                "y" : )" + std::to_string(Cars::cars[i].car_settings.position_y) + R"(
+                        "x" : )" + std::to_string(cars[i].car_settings.position_x) + R"(,
+                                "y" : )" + std::to_string(cars[i].car_settings.position_y) + R"(
                 }, )";
-        local_res += R"( "direction" : )" + std::to_string(Cars::cars[i].car_settings.angle) + R"( })";
-        if (i < Cars::cars.size() - 1) {
+        local_res += R"( "direction" : )" + std::to_string(cars[i].car_settings.angle) + R"( })";
+        if (i < cars.size() - 1) {
             local_res += ",";
         }
         cars_data.push_back(local_res);
     }
     res += R"( {"cars" : [ )";
-    for (size_t i = 0; i < Cars::cars.size(); ++i) {
+    for (size_t i = 0; i < cars.size(); ++i) {
         res += cars_data[i];
     }
     res += "],";

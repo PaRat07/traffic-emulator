@@ -20,4 +20,6 @@ public:
     Car(CarSettings::Settings, CarSettings::Direction, CarSettings::Turn);
 
     Car(CarSettings::Direction, CarSettings::Turn);
+
+    void UpdatePosition();
 };
