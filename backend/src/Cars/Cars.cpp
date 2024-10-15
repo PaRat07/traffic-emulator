@@ -1,4 +1,5 @@
 #include "../../Cars/Cars.h"
+#include "../../TrafficLight/TrafficLight.h"
 #include <algorithm>
 
 Cars::Cars() {
@@ -137,13 +138,31 @@ void Cars::SortCars() {
 }
 
 void Cars::UpdatePositions() {
+    int up_line = 500;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
+            if (TrafficLight::right_down_light.light_color ==
+            LightSettings::Color::Red) {
+                if (abs(car.car_settings.position_y - up_line) < 20) {
+                    car.car_settings.stop = true;
+                    continue;
+                }
+            }
+            car.car_settings.stop = false;
             car.UpdatePosition();
         }
     }
+    int down_line = 300;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : down[i]) {
+            if (TrafficLight::left_up_light.light_color ==
+                LightSettings::Color::Red) {
+                if (abs(car.car_settings.position_y - down_line) < 20) {
+                    car.car_settings.stop = true;
+                    continue;
+                }
+            }
+            car.car_settings.stop = false;
             car.UpdatePosition();
         }
     }
@@ -162,10 +181,30 @@ void Cars::UpdatePositions() {
 void Cars::UpdateSpeed() {
     int radius = 100;
     for (int i = 0; i < 2; ++i) {
+        for (auto &car : up[i]) {
+            if (car.car_settings.stop) {
+                car.car_settings.speed = 0;
+            } else {
+                car.car_settings.speed = std::min(car.car_settings.max_speed,
+                        car.car_settings.speed + car.car_settings.acceleration);
+            }
+        }
+    }
+    for (int i = 0; i < 2; ++i) {
         for (int j = up[i].size() - 2; j >= 0; --j) {
             if (up[i][j].car_settings.position_y -
             up[i][j + 1].car_settings.position_y < radius) {
                 up[i][j].car_settings.speed = up[i][j + 1].car_settings.speed;
+            }
+        }
+    }
+    for (int i = 0; i < 2; ++i) {
+        for (auto &car : down[i]) {
+            if (car.car_settings.stop) {
+                car.car_settings.speed = 0;
+            } else {
+                car.car_settings.speed = std::min(car.car_settings.max_speed,
+                                                  car.car_settings.speed + car.car_settings.acceleration);
             }
         }
     }
@@ -178,10 +217,30 @@ void Cars::UpdateSpeed() {
         }
     }
     for (int i = 0; i < 2; ++i) {
+        for (auto &car : left[i]) {
+            if (car.car_settings.stop) {
+                car.car_settings.speed = 0;
+            } else {
+                car.car_settings.speed = std::min(car.car_settings.max_speed,
+                                                  car.car_settings.speed + car.car_settings.acceleration);
+            }
+        }
+    }
+    for (int i = 0; i < 2; ++i) {
         for (int j = left[i].size() - 2; j >= 0; --j) {
             if (left[i][j].car_settings.position_x -
             left[i][j + 1].car_settings.position_x < radius) {
                 left[i][j].car_settings.speed = left[i][j + 1].car_settings.speed;
+            }
+        }
+    }
+    for (int i = 0; i < 2; ++i) {
+        for (auto &car : right[i]) {
+            if (car.car_settings.stop) {
+                car.car_settings.speed = 0;
+            } else {
+                car.car_settings.speed = std::min(car.car_settings.max_speed,
+                                                  car.car_settings.speed + car.car_settings.acceleration);
             }
         }
     }

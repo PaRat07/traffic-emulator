@@ -7,8 +7,12 @@ Car::Car(CarSettings::Settings settings, CarSettings::Direction direction,
     car_settings = settings;
     car_direction = direction;
     car_turn = turn;
-    car_settings.speed = static_cast<int32_t>(Random::mt() % UserCarSettings::maximal_speed)
+    car_settings.speed = static_cast<int32_t>(Random::mt() % (UserCarSettings::maximal_speed
+            - UserCarSettings::minimal_speed))
                          + UserCarSettings::minimal_speed;
+    car_settings.acceleration = static_cast<int>(Random::mt() % 2) + 1;
+    car_settings.max_speed = static_cast<int>(Random::mt() % (UserCarSettings::maximal_speed
+            - UserCarSettings::minimal_speed)) + UserCarSettings::minimal_speed;
 }
 
 Car::Car(CarSettings::Direction direction, CarSettings::Turn turn) {
@@ -17,6 +21,9 @@ Car::Car(CarSettings::Direction direction, CarSettings::Turn turn) {
     car_settings.line = Random::mt() % 2;
     car_settings.speed = static_cast<int32_t>(Random::mt() % UserCarSettings::maximal_speed)
             + UserCarSettings::minimal_speed;
+    car_settings.acceleration = static_cast<int>(Random::mt() % 2) + 1;
+    car_settings.max_speed = static_cast<int>(Random::mt() % (UserCarSettings::maximal_speed
+            - UserCarSettings::minimal_speed)) + UserCarSettings::minimal_speed;
 }
 
 void Car::UpdatePosition() {
