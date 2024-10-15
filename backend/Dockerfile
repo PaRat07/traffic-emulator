@@ -5,6 +5,7 @@ RUN wget -O /tmp/vcpkg.tar.gz https://github.com/microsoft/vcpkg/archive/master.
 RUN tar xf /tmp/vcpkg.tar.gz -C /opt
 RUN /opt/vcpkg-master/bootstrap-vcpkg.sh
 RUN ln -s /opt/vcpkg-master/vcpkg /usr/local/bin/vcpkg
+RUN apt install -y pkg-config
 COPY ./vcpkg.json ./vcpkg-configuration.json .
 RUN vcpkg install
 COPY . .
