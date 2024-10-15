@@ -67,7 +67,12 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
             } else {
                 new_car.car_settings.position_x = WINDOW_X / 2 + 50;
             }
-            new_car.car_settings.position_y = WINDOW_Y;
+            if (!up[new_car.car_settings.line].empty()) {
+                new_car.car_settings.position_y = std::max(WINDOW_Y,
+                        up[new_car.car_settings.line][0].car_settings.position_y + 130);
+            } else {
+                new_car.car_settings.position_y = WINDOW_Y;
+            }
             break;
         case CarSettings::Direction::Down:
             if (new_car.car_settings.line == 0) {
@@ -75,7 +80,12 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
             } else {
                 new_car.car_settings.position_x = WINDOW_X / 2 - 140;
             }
-            new_car.car_settings.position_y = 0;
+            if (!down[new_car.car_settings.line].empty()) {
+                new_car.car_settings.position_y = std::min(-20,
+                        down[new_car.car_settings.line][0].car_settings.position_y - 130);
+            } else {
+                new_car.car_settings.position_y = -20;
+            }
             break;
     }
     AddCar(new_car);
@@ -138,12 +148,12 @@ void Cars::SortCars() {
 }
 
 void Cars::UpdatePositions() {
-    int up_line = 500;
+    int up_line = 560;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
             if (TrafficLight::right_down_light.light_color ==
             LightSettings::Color::Red) {
-                if (abs(car.car_settings.position_y - up_line) < 20) {
+                if (abs(car.car_settings.position_y - up_line) < 30) {
                     car.car_settings.stop = true;
                     continue;
                 }
@@ -152,12 +162,12 @@ void Cars::UpdatePositions() {
             car.UpdatePosition();
         }
     }
-    int down_line = 300;
+    int down_line = 70;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : down[i]) {
             if (TrafficLight::left_up_light.light_color ==
                 LightSettings::Color::Red) {
-                if (abs(car.car_settings.position_y - down_line) < 20) {
+                if (abs(car.car_settings.position_y - down_line) < 30) {
                     car.car_settings.stop = true;
                     continue;
                 }
