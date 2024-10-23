@@ -64,9 +64,9 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
             break;
         case CarSettings::Direction::Up:
             if (new_car.car_settings.line == 0) {
-                new_car.car_settings.position_x = WINDOW_X / 2 - 10;
+                new_car.car_settings.position_x = WINDOW_X / 2 + 30;
             } else {
-                new_car.car_settings.position_x = WINDOW_X / 2 + 50;
+                new_car.car_settings.position_x = WINDOW_X / 2 + 90;
             }
             if (!up[new_car.car_settings.line].empty()) {
                 new_car.car_settings.position_y = std::max(WINDOW_Y,
@@ -77,9 +77,9 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
             break;
         case CarSettings::Direction::Down:
             if (new_car.car_settings.line == 0) {
-                new_car.car_settings.position_x = WINDOW_X / 2 - 80;
+                new_car.car_settings.position_x = WINDOW_X / 2 - 40;
             } else {
-                new_car.car_settings.position_x = WINDOW_X / 2 - 140;
+                new_car.car_settings.position_x = WINDOW_X / 2 - 100;
             }
             if (!down[new_car.car_settings.line].empty()) {
                 new_car.car_settings.position_y = std::min(-20,
