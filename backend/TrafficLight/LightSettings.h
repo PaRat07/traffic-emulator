@@ -1,11 +1,11 @@
 #pragma once
 
 namespace LightSettings {
-    enum Color {
+    enum class Color {
         Red, YellowUp, YellowDown, Green
     };
 
-    enum Mode {
+    enum class Mode {
         Static, Dynamic
     };
 }
