@@ -4,28 +4,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import crossroadPath from '../../assets/BigCrossRoad.jpeg'
 import carPath from '../../assets/Car.png'
 
-const throttle = (fn: Function, wait: number = 300) => {
-    let inThrottle: boolean,
-        lastFn: ReturnType<typeof setTimeout>,
-        lastTime: number;
-    return function (this: any) {
-        const context = this,
-            args = arguments;
-        if (!inThrottle) {
-            fn.apply(context, args);
-            lastTime = Date.now();
-            inThrottle = true;
-        } else {
-            clearTimeout(lastFn);
-            lastFn = setTimeout(() => {
-                if (Date.now() - lastTime >= wait) {
-                    fn.apply(context, args);
-                    lastTime = Date.now();
-                }
-            }, Math.max(wait - (Date.now() - lastTime), 0));
-        }
-    };
-};
 
 interface Pos {
     x: number,
@@ -60,7 +38,11 @@ const Home = () => {
         ctx.clearRect(0, 0, 1498, 723);
         ctx.drawImage(crossroadImage, 0, 0);
         resp.cars.map((car) => {
-            ctx.drawImage(carImage, car.pos.x, car.pos.y, carImage.width / 4, carImage.height / 4);
+            const radians = car.direction * Math.PI / 180;
+            ctx.translate(car.pos.x, car.pos.y);
+            ctx.rotate(radians);
+            ctx.drawImage(carImage, -carImage.width / 8, -carImage.height / 8, carImage.width / 4, carImage.height / 4);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
         });
         ctx.strokeStyle = "black";
         ctx.fillStyle = resp.left_up_light_color;
