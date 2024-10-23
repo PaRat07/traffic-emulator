@@ -59,15 +59,15 @@ const Home = () => {
         ctx.stroke();
         ctx.fillStyle = resp.right_down_light_color;
         ctx.beginPath();
-        ctx.arc(560, 520, 20, 0, 2 * Math.PI);
+        ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.fill()
-        ctx.arc(560, 520, 20, 0, 2 * Math.PI);
+        ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
         ctx.fillStyle = resp.right_up_light_color;
         ctx.beginPath();
-        ctx.arc(960, 520, 20, 0, 2 * Math.PI);
+        ctx.arc(560, 520, 20, 0, 2 * Math.PI);
         ctx.fill()
-        ctx.arc(960, 520, 20, 0, 2 * Math.PI);
+        ctx.arc(560, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
         requestAnimationFrame(redrawRaw);
     };
