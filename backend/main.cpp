@@ -22,7 +22,7 @@ void CAR() {
         last_time = cur;
     }
     RoadCars.Update();
-    if (Random::mt() % 100 > 95) {
+    if (Random::mt() % 100 > 97) {
         RoadCars.CreateRandomCar(WINDOW_X, WINDOW_Y);
     }
 }
