@@ -8,8 +8,8 @@ add_executable(${PROJECT_NAME} main.cpp
         src/Cars/Cars.cpp
         TrafficLight/Light.h
         src/TrafficLight/Light.cpp
-        TrafficLight/TrafficLight.h
-        src/TrafficLight/TrafficLight.cpp
+        TrafficLight/TrafficLights.h
+        src/TrafficLight/TrafficLights.cpp
         TrafficLight/LightSettings.h
         Cars/CarSettings.h
         src/UserSettings/UserLightSettings.cpp
