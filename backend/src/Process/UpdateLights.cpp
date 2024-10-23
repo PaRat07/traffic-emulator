@@ -31,12 +31,4 @@ bool LightsUpdater::UpdateLights(const int& get_time) {
         return UpdateLightColor(get_time, TrafficLights::left_down_light);
     }
     return false;
-    /*
-    if (get_time >= 3) {
-        TrafficLights::right_down_light.update_color();
-        TrafficLights::left_up_light.update_color();
-        return true;
-    }
-     */
-    return false;
 }
