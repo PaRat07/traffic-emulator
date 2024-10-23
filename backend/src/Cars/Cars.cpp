@@ -1,6 +1,7 @@
 #include "../../Cars/Cars.h"
-#include "../../TrafficLight/TrafficLight.h"
+#include "../../TrafficLight/TrafficLights.h"
 #include <algorithm>
+#include "../../Random.h"
 
 Cars::Cars() {
     up.resize(2);
@@ -151,7 +152,7 @@ void Cars::UpdatePositions() {
     int up_line = 560;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
-            if (TrafficLight::right_down_light.light_color ==
+            if (TrafficLights::right_down_light.light_color ==
             LightSettings::Color::Red) {
                 if (abs(car.car_settings.position_y - up_line) < 30) {
                     car.car_settings.stop = true;
@@ -165,7 +166,7 @@ void Cars::UpdatePositions() {
     int down_line = 70;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : down[i]) {
-            if (TrafficLight::left_up_light.light_color ==
+            if (TrafficLights::left_up_light.light_color ==
                 LightSettings::Color::Red) {
                 if (abs(car.car_settings.position_y - down_line) < 30) {
                     car.car_settings.stop = true;
@@ -189,7 +190,7 @@ void Cars::UpdatePositions() {
 }
 
 void Cars::UpdateSpeed() {
-    int radius = 100;
+    int radius = Random::mt() % 100 + 100;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
             if (car.car_settings.stop) {
