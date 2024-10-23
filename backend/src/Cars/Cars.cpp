@@ -25,7 +25,7 @@ void Cars::AddCar(Car car) {
 void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
     CarSettings::Direction direction;
     CarSettings::Turn turn;
-    int k1 = Random::mt() % 2;
+    int k1 = Random::mt() % 4;
     int k2 = Random::mt() % 3;
     switch (k1) {
         case 0:
@@ -55,14 +55,25 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
     Car new_car(direction, turn);
     switch (direction) {
         case CarSettings::Direction::Left:
-            new_car.car_settings.position_x = 0;
-            new_car.car_settings.position_y = WINDOW_Y / 2;
+            new_car.car_settings.angle = 90;
+            if (new_car.car_settings.line == 0) {
+                new_car.car_settings.position_y = WINDOW_Y / 2 - 90;
+            } else {
+                new_car.car_settings.position_y = WINDOW_Y / 2 - 30;
+            }
+            new_car.car_settings.position_x = WINDOW_X;
             break;
         case CarSettings::Direction::Right:
-            new_car.car_settings.position_x = WINDOW_X;
-            new_car.car_settings.position_y = WINDOW_Y / 2;
+            new_car.car_settings.angle = 270;
+            if (new_car.car_settings.line == 0) {
+                new_car.car_settings.position_y = WINDOW_Y / 2 + 30;
+            } else {
+                new_car.car_settings.position_y = WINDOW_Y / 2 + 90;
+            }
+            new_car.car_settings.position_x = 0;
             break;
         case CarSettings::Direction::Up:
+            new_car.car_settings.angle = 180;
             if (new_car.car_settings.line == 0) {
                 new_car.car_settings.position_x = WINDOW_X / 2 + 30;
             } else {
@@ -76,6 +87,7 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
             }
             break;
         case CarSettings::Direction::Down:
+            new_car.car_settings.angle = 0;
             if (new_car.car_settings.line == 0) {
                 new_car.car_settings.position_x = WINDOW_X / 2 - 40;
             } else {
@@ -149,11 +161,13 @@ void Cars::SortCars() {
 }
 
 void Cars::UpdatePositions() {
-    int up_line = 560;
+    int up_line = 620;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
             if (TrafficLights::right_down_light.light_color ==
-            LightSettings::Color::Red) {
+            LightSettings::Color::Red ||
+            TrafficLights::right_down_light.light_color ==
+            LightSettings::Color::YellowDown) {
                 if (abs(car.car_settings.position_y - up_line) < 30) {
                     car.car_settings.stop = true;
                     continue;
@@ -163,11 +177,13 @@ void Cars::UpdatePositions() {
             car.UpdatePosition();
         }
     }
-    int down_line = 70;
+    int down_line = 100;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : down[i]) {
             if (TrafficLights::left_up_light.light_color ==
-                LightSettings::Color::Red) {
+                LightSettings::Color::Red ||
+                TrafficLights::left_up_light.light_color ==
+                LightSettings::Color::YellowDown) {
                 if (abs(car.car_settings.position_y - down_line) < 30) {
                     car.car_settings.stop = true;
                     continue;
@@ -177,20 +193,42 @@ void Cars::UpdatePositions() {
             car.UpdatePosition();
         }
     }
+    int left_line = 1010;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : left[i]) {
+            if (TrafficLights::right_up_light.light_color ==
+            LightSettings::Color::Red ||
+            TrafficLights::right_up_light.light_color ==
+            LightSettings::Color::YellowDown) {
+                if (abs(car.car_settings.position_x - left_line) < 30) {
+                    car.car_settings.stop = true;
+                    continue;
+                }
+            }
+            car.car_settings.stop = false;
             car.UpdatePosition();
         }
     }
+    int right_line = 490;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : right[i]) {
+            if (TrafficLights::left_down_light.light_color ==
+                LightSettings::Color::Red ||
+                TrafficLights::left_down_light.light_color ==
+                LightSettings::Color::YellowDown) {
+                if (abs(car.car_settings.position_x - right_line) < 30) {
+                    car.car_settings.stop = true;
+                    continue;
+                }
+            }
+            car.car_settings.stop = false;
             car.UpdatePosition();
         }
     }
 }
 
 void Cars::UpdateSpeed() {
-    int radius = Random::mt() % 100 + 100;
+    int radius = 100;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
             if (car.car_settings.stop) {
