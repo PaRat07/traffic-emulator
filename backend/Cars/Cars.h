@@ -22,6 +22,7 @@ public:
 
     std::vector<Car> GetCars();
 
+
 private:
 
     void SortCars();
@@ -29,4 +30,6 @@ private:
     void UpdatePositions();
 
     void UpdateSpeed();
+
+    void ClearCars();
 };

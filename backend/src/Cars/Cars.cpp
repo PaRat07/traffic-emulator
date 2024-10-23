@@ -57,20 +57,30 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
         case CarSettings::Direction::Left:
             new_car.car_settings.angle = 90;
             if (new_car.car_settings.line == 0) {
-                new_car.car_settings.position_y = WINDOW_Y / 2 - 90;
+                new_car.car_settings.position_y = WINDOW_Y / 2 - 95;
             } else {
-                new_car.car_settings.position_y = WINDOW_Y / 2 - 30;
+                new_car.car_settings.position_y = WINDOW_Y / 2 - 35;
             }
-            new_car.car_settings.position_x = WINDOW_X;
+            if (!left[new_car.car_settings.line].empty()) {
+                new_car.car_settings.position_x = std::max(WINDOW_X,
+                        left[new_car.car_settings.line][0].car_settings.position_x + 130);
+            } else {
+                new_car.car_settings.position_x = WINDOW_X;
+            }
             break;
         case CarSettings::Direction::Right:
             new_car.car_settings.angle = 270;
             if (new_car.car_settings.line == 0) {
-                new_car.car_settings.position_y = WINDOW_Y / 2 + 30;
+                new_car.car_settings.position_y = WINDOW_Y / 2 + 35;
             } else {
-                new_car.car_settings.position_y = WINDOW_Y / 2 + 90;
+                new_car.car_settings.position_y = WINDOW_Y / 2 + 95;
             }
-            new_car.car_settings.position_x = 0;
+            if (!right[new_car.car_settings.line].empty()) {
+                new_car.car_settings.position_x = std::min(-20,
+                        right[new_car.car_settings.line][0].car_settings.position_x - 130);
+            } else {
+                new_car.car_settings.position_x = 0;
+            }
             break;
         case CarSettings::Direction::Up:
             new_car.car_settings.angle = 180;
@@ -108,6 +118,7 @@ void Cars::Update() {
     SortCars();
     UpdateSpeed();
     UpdatePositions();
+    ClearCars();
 }
 
 std::vector<Car> Cars::GetCars() {
@@ -299,6 +310,23 @@ void Cars::UpdateSpeed() {
             right[i][j].car_settings.position_x < radius) {
                 right[i][j].car_settings.speed = right[i][j + 1].car_settings.speed;
             }
+        }
+    }
+}
+
+void Cars::ClearCars() {
+    for (int i = 0; i < 2; ++i) {
+        while (!down[i].empty() && down[i].back().car_settings.position_y > 1000) { // window_y
+            down[i].pop_back();
+        }
+        while (!up[i].empty() && up[i].back().car_settings.position_y < -40) {
+            up[i].pop_back();
+        }
+        while (!right[i].empty() && right[i].back().car_settings.position_x > 2000) { // window_x
+            right[i].pop_back();
+        }
+        while (!left[i].empty() && left[i].back().car_settings.position_x < -40) {
+            left[i].pop_back();
         }
     }
 }
