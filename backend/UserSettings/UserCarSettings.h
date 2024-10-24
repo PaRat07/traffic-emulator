@@ -1,7 +1,7 @@
 #pragma once
-#include<iostream>
 
 namespace UserCarSettings {
-    extern int32_t minimal_speed;
-    extern int32_t maximal_speed;
+    extern int minimal_speed;
+    extern int maximal_speed;
+    extern int vision_radius;
 }

@@ -5,8 +5,8 @@
 class Light {
 public:
     LightSettings::Color light_color = LightSettings::Color::Red;
-    LightSettings::Mode light_mode = LightSettings::Mode::Static;
-    int32_t light_time = 3; /// in seconds
+
+    int color_number = 0;
 
     Light() = default;
 
@@ -14,4 +14,5 @@ public:
 
     void update_color();
 
+    int get_light_time(); // in seconds
 };

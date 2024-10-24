@@ -11,8 +11,8 @@ add_executable(${PROJECT_NAME} main.cpp
         src/Cars/Cars.cpp
         TrafficLight/Light.h
         src/TrafficLight/Light.cpp
-        TrafficLight/TrafficLight.h
-        src/TrafficLight/TrafficLight.cpp
+        TrafficLight/TrafficLights.h
+        src/TrafficLight/TrafficLights.cpp
         TrafficLight/LightSettings.h
         Cars/CarSettings.h
         src/UserSettings/UserLightSettings.cpp
@@ -21,6 +21,8 @@ add_executable(${PROJECT_NAME} main.cpp
         Random.h
         src/Random.cpp
         Process/UpdateLights.h
-        src/Process/UpdateLights.cpp)
+        src/Process/UpdateLights.cpp
+        UserSettings/WindowSettings.h
+        src/UserSettings/WindowSettings.cpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE userver::core)
