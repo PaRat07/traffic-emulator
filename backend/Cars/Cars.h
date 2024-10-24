@@ -32,4 +32,6 @@ private:
     void UpdateSpeed();
 
     void ClearCars();
+
+    void UpdateAngels(); // rotate cars
 };
