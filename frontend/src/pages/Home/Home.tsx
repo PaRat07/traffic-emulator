@@ -1,5 +1,5 @@
 import {Stack, ToggleButton, ToggleButtonGroup, Typography} from '@mui/material';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import crossroadPath from '../../assets/BigCrossRoad.jpeg'
 import carPath from '../../assets/Car.png'
@@ -24,9 +24,17 @@ interface Response {
 }
 
 const Home = () => {
+    let resp = useRef<Response | null>(null);
+    useEffect(() => {
+        (new WebSocket("ws://localhost:1234/cars")).onmessage = (resp_json: MessageEvent) => {
+            resp.current = resp_json.data() as Response;
+        }
+    }, []);
+
+
     const [canvas, setCanvas] = useState<HTMLCanvasElement>();
 
-    const redrawRaw = async () => {
+    useEffect(() => {
         if (canvas == null) return;
         const ctx = canvas.getContext("2d");
         if (ctx === null) return;
@@ -34,10 +42,10 @@ const Home = () => {
         crossroadImage.src = crossroadPath;
         const carImage = new Image();
         carImage.src = carPath;
-        const resp = (await (await fetch("http://localhost:1234/cars")).json()) as Response;
+        if (resp.current === null) return;
         ctx.clearRect(0, 0, 1498, 723);
         ctx.drawImage(crossroadImage, 0, 0);
-        resp.cars.map((car) => {
+        resp.current.cars.map((car) => {
             const radians = car.direction * Math.PI / 180;
             ctx.translate(car.pos.x, car.pos.y);
             ctx.rotate(radians);
@@ -45,34 +53,31 @@ const Home = () => {
             ctx.setTransform(1, 0, 0, 1, 0, 0);
         });
         ctx.strokeStyle = "black";
-        ctx.fillStyle = resp.left_up_light_color;
+        ctx.fillStyle = resp.current.left_up_light_color;
         ctx.beginPath();
         ctx.arc(560, 220, 20, 0, 2 * Math.PI);
         ctx.fill();
         ctx.arc(560, 220, 20, 0, 2 * Math.PI);
         ctx.stroke();
-        ctx.fillStyle = resp.left_down_light_color;
+        ctx.fillStyle = resp.current.left_down_light_color;
         ctx.beginPath();
         ctx.arc(960, 220, 20, 0, 2 * Math.PI);
         ctx.fill();
         ctx.arc(960, 220, 20, 0, 2 * Math.PI);
         ctx.stroke();
-        ctx.fillStyle = resp.right_down_light_color;
+        ctx.fillStyle = resp.current.right_down_light_color;
         ctx.beginPath();
         ctx.arc(560, 520, 20, 0, 2 * Math.PI);
         ctx.fill()
         ctx.arc(560, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
-        ctx.fillStyle = resp.right_up_light_color;
+        ctx.fillStyle = resp.current.right_up_light_color;
         ctx.beginPath();
         ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.fill()
         ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
-        requestAnimationFrame(redrawRaw);
-    };
-    // const redraw = throttle(redrawRaw, 0);
-    requestAnimationFrame(redrawRaw);
+    }, [resp]);
 
     return (
         <>
