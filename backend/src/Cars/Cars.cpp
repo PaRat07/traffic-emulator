@@ -2,6 +2,7 @@
 #include "../../TrafficLight/TrafficLights.h"
 #include <algorithm>
 #include "../../Random.h"
+#include "../../UserSettings/UserCarSettings.h"
 
 Cars::Cars() {
     up.resize(2);
@@ -116,8 +117,11 @@ void Cars::CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y) {
 
 void Cars::Update() {
     SortCars();
+
     UpdateSpeed();
     UpdatePositions();
+    UpdateAngels();
+
     ClearCars();
 }
 
@@ -239,7 +243,6 @@ void Cars::UpdatePositions() {
 }
 
 void Cars::UpdateSpeed() {
-    int radius = 100;
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
             if (car.car_settings.stop) {
@@ -253,7 +256,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = up[i].size() - 2; j >= 0; --j) {
             if (up[i][j].car_settings.position_y -
-            up[i][j + 1].car_settings.position_y < radius) {
+            up[i][j + 1].car_settings.position_y < UserCarSettings::vision_radius) {
                 up[i][j].car_settings.speed = up[i][j + 1].car_settings.speed;
             }
         }
@@ -271,7 +274,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = down[i].size() - 2; j >= 0; --j) {
             if (down[i][j + 1].car_settings.position_y -
-            down[i][j].car_settings.position_y < radius) {
+            down[i][j].car_settings.position_y < UserCarSettings::vision_radius) {
                 down[i][j].car_settings.speed = down[i][j + 1].car_settings.speed;
             }
         }
@@ -289,7 +292,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = left[i].size() - 2; j >= 0; --j) {
             if (left[i][j].car_settings.position_x -
-            left[i][j + 1].car_settings.position_x < radius) {
+            left[i][j + 1].car_settings.position_x < UserCarSettings::vision_radius) {
                 left[i][j].car_settings.speed = left[i][j + 1].car_settings.speed;
             }
         }
@@ -307,7 +310,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = right[i].size() - 2; j >= 0; --j) {
             if (right[i][j + 1].car_settings.position_x -
-            right[i][j].car_settings.position_x < radius) {
+            right[i][j].car_settings.position_x < UserCarSettings::vision_radius) {
                 right[i][j].car_settings.speed = right[i][j + 1].car_settings.speed;
             }
         }
@@ -327,6 +330,14 @@ void Cars::ClearCars() {
         }
         while (!left[i].empty() && left[i].back().car_settings.position_x < -40) {
             left[i].pop_back();
+        }
+    }
+}
+
+void Cars::UpdateAngels() {
+    for (auto &car : up[0]) {
+        if (car.car_turn == CarSettings::Turn::Right) {
+            //
         }
     }
 }
