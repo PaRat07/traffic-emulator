@@ -18,7 +18,9 @@ add_executable(${PROJECT_NAME} main.cpp
         Random.h
         src/Random.cpp
         Process/UpdateLights.h
-        src/Process/UpdateLights.cpp)
+        src/Process/UpdateLights.cpp
+        UserSettings/WindowSettings.h
+        src/UserSettings/WindowSettings.cpp)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -fno-stack-protector")
 find_package(httplib CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE httplib::httplib)
