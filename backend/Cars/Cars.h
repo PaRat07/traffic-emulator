@@ -16,7 +16,7 @@ public:
 
     void AddCar(Car car);
 
-    void CreateRandomCar(const int& WINDOW_X, const int& WINDOW_Y);
+    void CreateRandomCar();
 
     void Update();
 
