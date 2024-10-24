@@ -1,5 +1,5 @@
 import {Stack, ToggleButton, ToggleButtonGroup, Typography} from '@mui/material';
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import CheckIcon from '@mui/icons-material/Check';
 import crossroadPath from '../../assets/BigCrossRoad.jpeg'
 import carPath from '../../assets/Car.png'
@@ -25,10 +25,15 @@ interface Response {
 
 const Home = () => {
     let resp = useRef<Response | null>(null);
+    const [flag, setFlag] = useState<number>(0);
+    const handleNewData = useCallback((resp_json: MessageEvent) => {
+        resp.current = JSON.parse(resp_json.data);
+        setFlag((prevValue) => {
+            return prevValue + 1;
+    });
+    }, [flag]);
     useEffect(() => {
-        (new WebSocket("ws://localhost:1234/cars")).onmessage = (resp_json: MessageEvent) => {
-            resp.current = resp_json.data() as Response;
-        }
+        (new WebSocket("ws://localhost:1234/cars")).onmessage = handleNewData
     }, []);
 
 
@@ -42,7 +47,8 @@ const Home = () => {
         crossroadImage.src = crossroadPath;
         const carImage = new Image();
         carImage.src = carPath;
-        if (resp.current === null) return;
+        console.log(resp.current.left_down_light_color);
+        if (resp.current === null || resp.current.cars === undefined) return;
         ctx.clearRect(0, 0, 1498, 723);
         ctx.drawImage(crossroadImage, 0, 0);
         resp.current.cars.map((car) => {
@@ -77,7 +83,7 @@ const Home = () => {
         ctx.fill()
         ctx.arc(960, 520, 20, 0, 2 * Math.PI);
         ctx.stroke()
-    }, [resp]);
+    }, [flag]);
 
     return (
         <>
