@@ -1,6 +1,5 @@
 #include "../../Process/UpdateLights.h"
 #include "../../TrafficLight/TrafficLights.h"
-#include "../../TrafficLight/Light.h"
 
 bool LightsUpdater::UpdateLightColor(const int& get_time,
                                 Light& light) {
