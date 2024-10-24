@@ -9,8 +9,8 @@ namespace CarSettings {
         int speed = 0;
         int max_speed = 0;
         bool stop = false;
-        int position_x = 0;
-        int position_y = 0;
+        double position_x = 0;
+        double position_y = 0;
         int32_t line = 0;
         int acceleration = 0;
     };
