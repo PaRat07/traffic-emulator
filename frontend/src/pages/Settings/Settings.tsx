@@ -64,6 +64,7 @@ const Settings = () => {
                     })
                 }
             )).json()));
+            console.log(value);
         }) ();
     }
     const setGreenTime = (value: number) => {
@@ -256,12 +257,13 @@ const Settings = () => {
                             <FormControlLabel disabled={ !!sets?.cur_adaptivness_light_time } control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setRedTime(Math.max(sets?.cur_light_time_red??0 - 1, 1));
+                                        setRedTime(Math.max((sets?.cur_light_time_red??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setRedTime(sets?.cur_light_time_red??0 + 1);
+
+                                        setRedTime((sets?.cur_light_time_red??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -280,12 +282,12 @@ const Settings = () => {
                             <FormControlLabel disabled={ !!sets?.cur_adaptivness_light_time } control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setYellowTime(Math.max(sets?.cur_light_time_yellow??0 - 1, 1));
+                                        setYellowTime(Math.max((sets?.cur_light_time_yellow??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setYellowTime(sets?.cur_light_time_yellow??0 + 1);
+                                        setYellowTime((sets?.cur_light_time_yellow??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -304,12 +306,12 @@ const Settings = () => {
                             <FormControlLabel disabled={ !!sets?.cur_adaptivness_light_time } control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setGreenTime(Math.max(sets?.cur_light_time_green??0 - 1, 1));
+                                        setGreenTime(Math.max((sets?.cur_light_time_green??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setGreenTime(sets?.cur_light_time_green??0 + 1);
+                                        setGreenTime((sets?.cur_light_time_green??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -325,15 +327,15 @@ const Settings = () => {
                     <Typography variant="h6" fontWeight="bold">
                         { sets?.interval_car_spawn_l }
                     </Typography>
-                    <FormControlLabel disabled={ sets?.interval_car_spawn_l === 2 } control={
+                    <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodL(Math.max(sets?.interval_car_spawn_l??52 - 1, 1));
+                                setSpawningPeriodL(Math.max((sets?.interval_car_spawn_l??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodL(sets?.interval_car_spawn_l??52 + 1);
+                                setSpawningPeriodL((sets?.interval_car_spawn_l??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -347,15 +349,15 @@ const Settings = () => {
                     <Typography variant="h6" fontWeight="bold">
                         { sets?.interval_car_spawn_r }
                     </Typography>
-                    <FormControlLabel disabled={ sets?.interval_car_spawn_r === 2 } control={
+                    <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodR(Math.max(sets?.interval_car_spawn_r??0 - 1, 1));
+                                setSpawningPeriodR(Math.max((sets?.interval_car_spawn_r??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodR(sets?.interval_car_spawn_r??0 + 1);
+                                setSpawningPeriodR((sets?.interval_car_spawn_r??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -369,15 +371,15 @@ const Settings = () => {
                     <Typography variant="h6" fontWeight="bold">
                         { sets?.interval_car_spawn_u }
                     </Typography>
-                    <FormControlLabel disabled={ sets?.interval_car_spawn_u === 2 } control={
+                    <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodU(Math.max(sets?.interval_car_spawn_u??0 - 1, 1));
+                                setSpawningPeriodU(Math.max((sets?.interval_car_spawn_u??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodU(sets?.interval_car_spawn_u??0 + 1);
+                                setSpawningPeriodU((sets?.interval_car_spawn_u??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -391,15 +393,15 @@ const Settings = () => {
                     <Typography variant="h6" fontWeight="bold">
                         { sets?.interval_car_spawn_d }
                     </Typography>
-                    <FormControlLabel disabled={ sets?.interval_car_spawn_d === 2 } control={
+                    <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodD(Math.max(sets?.interval_car_spawn_d??0 - 1, 1));
+                                setSpawningPeriodD(Math.max((sets?.interval_car_spawn_d??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriodD(sets?.interval_car_spawn_d??0 + 1);
+                                setSpawningPeriodD((sets?.interval_car_spawn_d??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -416,12 +418,12 @@ const Settings = () => {
                     <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setVisionDist(Math.max(sets?.view_range??0 - 1, 1));
+                                setVisionDist(Math.max((sets?.view_range??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setVisionDist(sets?.view_range??0 + 1);
+                                setVisionDist((sets?.view_range??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -440,12 +442,12 @@ const Settings = () => {
                             <FormControlLabel control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setMinSpeed(Math.max(sets?.min_speed??0 - 1, 1));
+                                        setMinSpeed(Math.max((sets?.min_speed??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setMinSpeed(sets?.min_speed??0 + 1);
+                                        setMinSpeed((sets?.min_speed??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -464,12 +466,12 @@ const Settings = () => {
                             <FormControlLabel control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setMaxSpeed(Math.max(sets?.max_speed??0 - 1, 1));
+                                        setMaxSpeed(Math.max((sets?.max_speed??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setMaxSpeed(sets?.max_speed??0 + 1);
+                                        setMaxSpeed((sets?.max_speed??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
