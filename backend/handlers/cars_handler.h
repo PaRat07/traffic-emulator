@@ -22,11 +22,12 @@ void CAR() {
     auto cur = std::chrono::steady_clock::now();
     auto get_time = std::chrono::duration_cast<std::chrono::seconds>
             (cur - last_time).count();
-    if (LightsUpdater::UpdateLights(static_cast<int>(get_time))) {
+    if (LightsUpdater::UpdateLights(static_cast<int>(get_time),
+                                    RoadCars)) {
         last_time = cur;
     }
     RoadCars.Update();
-    if (Random::mt() % 100 > 94) {
+    if (Random::mt() % 100 > 96) {
         RoadCars.CreateRandomCar();
     }
 }

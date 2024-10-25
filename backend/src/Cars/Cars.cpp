@@ -67,7 +67,7 @@ void Cars::CreateRandomCar() {
             }
             if (!left[new_car.car_settings.line].empty()) {
                 new_car.car_settings.position_x = std::max(double(WindowSettings::WINDOW_X),
-                        left[new_car.car_settings.line][0].car_settings.position_x + 130.0);
+                                                           left[new_car.car_settings.line][0].car_settings.position_x + 130.0);
             } else {
                 new_car.car_settings.position_x = WindowSettings::WINDOW_X;
             }
@@ -83,7 +83,7 @@ void Cars::CreateRandomCar() {
             }
             if (!right[new_car.car_settings.line].empty()) {
                 new_car.car_settings.position_x = std::min(-20.0,
-                        right[new_car.car_settings.line][0].car_settings.position_x - 130.0);
+                                                           right[new_car.car_settings.line][0].car_settings.position_x - 130.0);
             } else {
                 new_car.car_settings.position_x = 0;
             }
@@ -99,7 +99,7 @@ void Cars::CreateRandomCar() {
             }
             if (!up[new_car.car_settings.line].empty()) {
                 new_car.car_settings.position_y = std::max(double(WindowSettings::WINDOW_Y),
-                        up[new_car.car_settings.line][0].car_settings.position_y + 130.0);
+                                                           up[new_car.car_settings.line][0].car_settings.position_y + 130.0);
             } else {
                 new_car.car_settings.position_y = WindowSettings::WINDOW_Y;
             }
@@ -115,7 +115,7 @@ void Cars::CreateRandomCar() {
             }
             if (!down[new_car.car_settings.line].empty()) {
                 new_car.car_settings.position_y = std::min(-20.0,
-                        down[new_car.car_settings.line][0].car_settings.position_y - 130.0);
+                                                           down[new_car.car_settings.line][0].car_settings.position_y - 130.0);
             } else {
                 new_car.car_settings.position_y = -20;
             }
@@ -190,12 +190,12 @@ void Cars::UpdatePositions() {
     for (int i = 0; i < 2; ++i) {
         for (auto &car : up[i]) {
             if (TrafficLights::right_down_light.light_color ==
-            LightSettings::Color::Red ||
-            TrafficLights::right_down_light.light_color ==
-            LightSettings::Color::YellowDown) {
+                LightSettings::Color::Red ||
+                TrafficLights::right_down_light.light_color ==
+                LightSettings::Color::YellowDown) {
                 if (car.car_settings.position_y -
-                WindowSettings::up_stop_line < 40 &&
-                car.car_settings.position_y - WindowSettings::up_stop_line > 20) {
+                    WindowSettings::up_stop_line < 40 &&
+                    car.car_settings.position_y - WindowSettings::up_stop_line > 20) {
                     car.car_settings.stop = true;
                     continue;
                 }
@@ -211,8 +211,8 @@ void Cars::UpdatePositions() {
                 TrafficLights::left_up_light.light_color ==
                 LightSettings::Color::YellowDown) {
                 if (WindowSettings::down_stop_line -
-                car.car_settings.position_y < 40 &&
-                WindowSettings::down_stop_line - car.car_settings.position_y > 20) {
+                    car.car_settings.position_y < 40 &&
+                    WindowSettings::down_stop_line - car.car_settings.position_y > 20) {
                     car.car_settings.stop = true;
                     continue;
                 }
@@ -224,11 +224,11 @@ void Cars::UpdatePositions() {
     for (int i = 0; i < 2; ++i) {
         for (auto &car : left[i]) {
             if (TrafficLights::right_up_light.light_color ==
-            LightSettings::Color::Red ||
-            TrafficLights::right_up_light.light_color ==
-            LightSettings::Color::YellowDown) {
+                LightSettings::Color::Red ||
+                TrafficLights::right_up_light.light_color ==
+                LightSettings::Color::YellowDown) {
                 if (abs(car.car_settings.position_x -
-                WindowSettings::left_stop_line) < 30) {
+                        WindowSettings::left_stop_line) < 30) {
                     car.car_settings.stop = true;
                     continue;
                 }
@@ -244,7 +244,7 @@ void Cars::UpdatePositions() {
                 TrafficLights::left_down_light.light_color ==
                 LightSettings::Color::YellowDown) {
                 if (abs(car.car_settings.position_x -
-                WindowSettings::right_stop_line) < 30) {
+                        WindowSettings::right_stop_line) < 30) {
                     car.car_settings.stop = true;
                     continue;
                 }
@@ -262,14 +262,14 @@ void Cars::UpdateSpeed() {
                 car.car_settings.speed = 0;
             } else {
                 car.car_settings.speed = std::min(car.car_settings.max_speed,
-                        car.car_settings.speed + car.car_settings.acceleration);
+                                                  car.car_settings.speed + car.car_settings.acceleration);
             }
         }
     }
     for (int i = 0; i < 2; ++i) {
         for (int j = up[i].size() - 2; j >= 0; --j) {
             if (up[i][j].car_settings.position_y -
-            up[i][j + 1].car_settings.position_y < UserCarSettings::vision_radius) {
+                up[i][j + 1].car_settings.position_y < UserCarSettings::vision_radius) {
                 up[i][j].car_settings.speed = up[i][j + 1].car_settings.speed;
             }
         }
@@ -287,7 +287,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = down[i].size() - 2; j >= 0; --j) {
             if (down[i][j + 1].car_settings.position_y -
-            down[i][j].car_settings.position_y < UserCarSettings::vision_radius) {
+                down[i][j].car_settings.position_y < UserCarSettings::vision_radius) {
                 down[i][j].car_settings.speed = down[i][j + 1].car_settings.speed;
             }
         }
@@ -305,7 +305,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = left[i].size() - 2; j >= 0; --j) {
             if (left[i][j].car_settings.position_x -
-            left[i][j + 1].car_settings.position_x < UserCarSettings::vision_radius) {
+                left[i][j + 1].car_settings.position_x < UserCarSettings::vision_radius) {
                 left[i][j].car_settings.speed = left[i][j + 1].car_settings.speed;
             }
         }
@@ -323,7 +323,7 @@ void Cars::UpdateSpeed() {
     for (int i = 0; i < 2; ++i) {
         for (int j = right[i].size() - 2; j >= 0; --j) {
             if (right[i][j + 1].car_settings.position_x -
-            right[i][j].car_settings.position_x < UserCarSettings::vision_radius) {
+                right[i][j].car_settings.position_x < UserCarSettings::vision_radius) {
                 right[i][j].car_settings.speed = right[i][j + 1].car_settings.speed;
             }
         }
@@ -333,14 +333,14 @@ void Cars::UpdateSpeed() {
 void Cars::ClearCars() {
     for (int i = 0; i < 2; ++i) {
         while (!down[i].empty() && down[i].back().car_settings.position_y >
-        WindowSettings::WINDOW_Y + 1000) {
+                                   WindowSettings::WINDOW_Y + 1000) {
             down[i].pop_back();
         }
         while (!up[i].empty() && up[i].back().car_settings.position_y < -1000) {
             up[i].pop_back();
         }
         while (!right[i].empty() && right[i].back().car_settings.position_x >
-        WindowSettings::WINDOW_X + 1000) {
+                                    WindowSettings::WINDOW_X + 1000) {
             right[i].pop_back();
         }
         while (!left[i].empty() && left[i].back().car_settings.position_x < -1000) {
@@ -354,11 +354,11 @@ void Cars::UpdateAngels() {
     for (auto &car : up[1]) {
         if (car.car_turn == CarSettings::Turn::Right) {
             if (car.car_settings.position_y < WindowSettings::up_stop_line &&
-            car.car_settings.position_y > WindowSettings::WINDOW_Y / 2 + 95) {
+                car.car_settings.position_y > WindowSettings::WINDOW_Y / 2 + 95) {
                 car.car_settings.angle += (90.0 * (double)car.car_settings.speed) /
-                        double(WindowSettings::up_stop_line -
-                        (WindowSettings::WINDOW_Y / 2 + 95));
-                car.car_settings.position_x += 25 / car.car_settings.speed;
+                                          double(WindowSettings::up_stop_line -
+                                                 (WindowSettings::WINDOW_Y / 2 + 95));
+                car.car_settings.position_x += 1;
             } else if (car.car_settings.position_y < WindowSettings::WINDOW_Y / 2 + 95) {
                 car.car_turn = CarSettings::Turn::None;
                 car.car_direction = CarSettings::Direction::Right;
@@ -373,11 +373,11 @@ void Cars::UpdateAngels() {
     for (auto &car : up[0]) {
         if (car.car_turn == CarSettings::Turn::Left) {
             if (car.car_settings.position_y < WindowSettings::up_stop_line &&
-            car.car_settings.position_y > WindowSettings::WINDOW_Y / 2 - 35) {
+                car.car_settings.position_y > WindowSettings::WINDOW_Y / 2 - 35) {
                 car.car_settings.angle -= (90.0 * (double)car.car_settings.speed) /
-                        double(WindowSettings::up_stop_line -
-                        (WindowSettings::WINDOW_Y / 2 - 35));
-                car.car_settings.position_x -= 40 / car.car_settings.speed;
+                                          double(WindowSettings::up_stop_line -
+                                                 (WindowSettings::WINDOW_Y / 2 - 35));
+                car.car_settings.position_x -= 1;
             } else if (car.car_settings.position_y < WindowSettings::WINDOW_Y / 2 - 35) {
                 car.car_turn = CarSettings::Turn::None;
                 car.car_direction = CarSettings::Direction::Left;
@@ -397,8 +397,8 @@ void Cars::UpdateAngels() {
                 car.car_settings.position_y < WindowSettings::WINDOW_Y / 2 - 95) {
                 car.car_settings.angle += (90.0 * (double)car.car_settings.speed) /
                                           double((WindowSettings::WINDOW_Y / 2 - 95)
-                                          - WindowSettings::down_stop_line);
-                car.car_settings.position_x -= 25 / car.car_settings.speed;
+                                                 - WindowSettings::down_stop_line);
+                car.car_settings.position_x -= 1;
             } else if (car.car_settings.position_y > WindowSettings::WINDOW_Y / 2 - 95) {
                 car.car_turn = CarSettings::Turn::None;
                 car.car_direction = CarSettings::Direction::Left;
@@ -417,7 +417,7 @@ void Cars::UpdateAngels() {
                 car.car_settings.angle -= (90.0 * (double)car.car_settings.speed) /
                                           double((WindowSettings::WINDOW_Y / 2 + 35)
                                                  - WindowSettings::down_stop_line);
-                car.car_settings.position_x += 40 / car.car_settings.speed;
+                car.car_settings.position_x += 1;
             } else if (car.car_settings.position_y > WindowSettings::WINDOW_Y / 2 + 35) {
                 car.car_turn = CarSettings::Turn::None;
                 car.car_direction = CarSettings::Direction::Right;
@@ -429,4 +429,87 @@ void Cars::UpdateAngels() {
         new_down[0].push_back(car);
     }
     down = new_down;
+
+    std::vector<std::vector<Car>> new_left(2);
+
+    for (auto &car : left[1]) {
+        if (car.car_turn == CarSettings::Turn::Right) {
+            if (car.car_settings.position_x < WindowSettings::left_stop_line &&
+                car.car_settings.position_x > WindowSettings::WINDOW_X / 2 + 90) {
+                car.car_settings.angle -= (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 + 90)
+                                                 - WindowSettings::left_stop_line);
+                car.car_settings.position_y -= 1;
+            } else if (car.car_settings.position_x < WindowSettings::WINDOW_X / 2 + 90) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Up;
+                car.car_settings.angle = 180.0;
+                up[1].push_back(car);
+                continue;
+            }
+        }
+        new_left[1].push_back(car);
+    }
+
+    for (auto &car : left[0]) {
+        if (car.car_turn == CarSettings::Turn::Left) {
+            if (car.car_settings.position_x < WindowSettings::left_stop_line &&
+                car.car_settings.position_x > WindowSettings::WINDOW_X / 2 - 40) {
+                car.car_settings.angle += (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 - 40)
+                                                 - WindowSettings::left_stop_line);
+                car.car_settings.position_y += 1;
+            } else if (car.car_settings.position_x < WindowSettings::WINDOW_X / 2 - 40) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Down;
+                car.car_settings.angle = 0.0;
+                down[0].push_back(car);
+                continue;
+            }
+        }
+        new_left[0].push_back(car);
+    }
+    left = new_left;
+
+    std::vector<std::vector<Car>> new_right(2);
+
+    for (auto &car : right[1]) {
+        if (car.car_turn == CarSettings::Turn::Right) {
+            if (car.car_settings.position_x > WindowSettings::right_stop_line &&
+                car.car_settings.position_x < WindowSettings::WINDOW_X / 2 - 100) {
+                car.car_settings.angle += (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 - 100)
+                                                 - WindowSettings::right_stop_line);
+                car.car_settings.position_y += 1;
+            } else if (car.car_settings.position_x > WindowSettings::WINDOW_X / 2 - 100) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Down;
+                car.car_settings.angle = 0.0;
+                down[1].push_back(car);
+                continue;
+            }
+        }
+        new_right[1].push_back(car);
+    }
+
+    for (auto &car : right[0]) {
+        if (car.car_turn == CarSettings::Turn::Left) {
+            if (car.car_settings.position_x > WindowSettings::right_stop_line &&
+                car.car_settings.position_x < WindowSettings::WINDOW_X / 2 + 30) {
+                car.car_settings.angle -= (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 + 30)
+                                                 - WindowSettings::right_stop_line);
+                car.car_settings.position_y -= 1;
+            } else if (car.car_settings.position_x > WindowSettings::WINDOW_X / 2 + 30) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Up;
+                car.car_settings.angle = 180.0;
+                up[0].push_back(car);
+                continue;
+            }
+        }
+        new_right[0].push_back(car);
+    }
+    right = new_right;
+
 }

@@ -3,6 +3,8 @@
 #include <userver/components/component_list.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
 #include <userver/http/common_headers.hpp>
+#include "../UserSettings/UserCarSettings.h"
+#include "../UserSettings/UserLightSettings.h"
 
 using namespace userver;
 using namespace std::string_literals;
@@ -16,13 +18,14 @@ public:
     using HttpHandlerJsonBase::HttpHandlerJsonBase;
 
     formats::json::Value HandleRequestJsonThrow(const server::http::HttpRequest &req, const formats::json::Value& json, server::request::RequestContext&) const override {
-        static int cur_light_time_yellow = 3;
-        static int cur_light_time_green = 3;
-        static int cur_light_time_red = 3;
-        static bool cur_adaptivness_light_time = false;
-        static int max_speed = 10;
-        static int min_speed = 10;
-        static int view_range = 10;
+        static int cur_light_time_yellow = UserLightSettings::user_yellow_light_time;
+        static int cur_light_time_green = UserLightSettings::user_green_light_time;
+        static int cur_light_time_red = UserLightSettings::user_red_light_time;
+        static bool cur_adaptivness_light_time =
+                !(UserLightSettings::user_mode == LightSettings::Mode::Static);
+        static int max_speed = UserCarSettings::maximal_speed;
+        static int min_speed = UserCarSettings::minimal_speed;
+        static int view_range = UserCarSettings::vision_radius;
         static int interval_car_spawn_l = 3;
         static int interval_car_spawn_r = 3;
         static int interval_car_spawn_d = 3;

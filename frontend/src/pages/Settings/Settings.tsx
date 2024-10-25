@@ -475,7 +475,7 @@ const Settings = () => {
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
-                                </ButtonGroup>
+           export default Settings;                     </ButtonGroup>
                             }/>
                         </Stack>
                     </Stack>
