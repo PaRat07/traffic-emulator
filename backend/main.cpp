@@ -14,7 +14,6 @@
 
 int main(int argc, char* argv[]) {
     using namespace CarSettings;
-    
 
     auto component_list = userver::components::MinimalServerComponentList()
                             .Append<WebsocketsHandler>()
