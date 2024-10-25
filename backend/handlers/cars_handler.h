@@ -83,7 +83,6 @@ public:
             message.data = GetCars();
             message.is_text = true;
             chat.Send(std::move(message));
-            LOG_DEBUG() << "Websocket message sent";
             userver::engine::SleepFor((1000ms) / 60);
         }
     }

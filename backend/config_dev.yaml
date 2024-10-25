@@ -28,6 +28,6 @@ components_manager:
 
     settings-handler:            # Finally! Websocket handler.
       path: /set               # Registering handlers '/*' find files.
-      method: POST               # Handle only GET requests.
+      method: POST,OPTIONS               # Handle only GET requests.
       task_processor: main-task-processor  # Run it on CPU bound task processor
       parse_args_from_body: true

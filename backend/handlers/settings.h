@@ -2,22 +2,23 @@
 
 #include <userver/components/component_list.hpp>
 #include <userver/server/handlers/http_handler_base.hpp>
+#include <userver/http/common_headers.hpp>
 
 using namespace userver;
+using namespace std::string_literals;
 
-class SettingsHandler final : public server::handlers::HttpHandlerBase {
+class SettingsHandler final : public server::handlers::HttpHandlerJsonBase {
 public:
     // `kName` is used as the component name in static config
     static constexpr std::string_view kName = "settings-handler";
 
     // Component is valid after construction and is able to accept requests
-    using HttpHandlerBase::HttpHandlerBase;
+    using HttpHandlerJsonBase::HttpHandlerJsonBase;
 
-    std::string HandleRequestThrow(const server::http::HttpRequest& request, server::request::RequestContext&) const override {
-        static int cur_light_time_lu = 3;
-        static int cur_light_time_ld = 3;
-        static int cur_light_time_ru = 3;
-        static int cur_light_time_rd = 3;
+    formats::json::Value HandleRequestJsonThrow(const server::http::HttpRequest &req, const formats::json::Value& json, server::request::RequestContext&) const override {
+        static int cur_light_time_yellow = 3;
+        static int cur_light_time_green = 3;
+        static int cur_light_time_red = 3;
         static bool cur_adaptivness_light_time = false;
         static int max_speed = 10;
         static int min_speed = 10;
@@ -26,55 +27,60 @@ public:
         static int interval_car_spawn_r = 3;
         static int interval_car_spawn_d = 3;
         static int interval_car_spawn_u = 3;
-        if (request.GetArg("type") == "light_time") {
-            if (request.GetArg("which_light") == "lu") {
-                cur_light_time_lu = std::stoi(request.GetArg("value"));
-            } else if (request.GetArg("which_light") == "rd") {
-                cur_light_time_rd = std::stoi(request.GetArg("value"));
-            } else if (request.GetArg("which_light") == "ru") {
-                cur_light_time_ru = std::stoi(request.GetArg("value"));
-            } else if (request.GetArg("which_light") == "ld") {
-                cur_light_time_ld = std::stoi(request.GetArg("value"));
+        if (json.IsEmpty()) {
+            req.GetHttpResponse().SetStatus(server::http::HttpStatus::kOk);
+            req.GetHttpResponse().SetHeader(std::string("Access-Control-Allow-Origin"), std::string("*"));
+            req.GetHttpResponse().SetHeader(std::string("Access-Control-Allow-Headers"), std::string("Authorization, Content-Type"));
+            return {};
+        }
+        if (json["type"].As<std::string>() == "light_time") {
+            if (json["which_light"].As<std::string>() == "green") {
+                cur_light_time_green = json["value"].As<int>();
+            } else if (json["which_light"].As<std::string>() == "red") {
+                cur_light_time_red = json["value"].As<int>();
+            } else if (json["which_light"].As<std::string>() == "yellow") {
+                cur_light_time_yellow = json["value"].As<int>();
             } else {
-                request.SetResponseStatus(server::http::HttpStatus::kBadRequest);
+                throw std::runtime_error("incorrect query");
             }
-        } else if (request.GetArg("type") == "adaptive_light_time") {
-            if (request.GetArg("value") == "true") {
+        } else if (json["type"].As<std::string>() == "adaptive_light_time") {
+            if (json["value"].As<bool>()) {
                 cur_adaptivness_light_time = true;
-            } else if (request.GetArg("value") == "true") {
-                cur_adaptivness_light_time = false;
             } else {
-                request.SetResponseStatus(server::http::HttpStatus::kBadRequest);
+                cur_adaptivness_light_time = false;
             }
-        } else if (request.GetArg("type") == "speed") {
-            if (request.GetArg("edge") == "max") {
-                max_speed = std::stoi(request.GetArg("value"));
+        } else if (json["type"].As<std::string>() == "speed") {
+            if (json["edge"].As<std::string>() == "max") {
+                max_speed = json["value"].As<int>();
                 max_speed = std::max(max_speed, min_speed);
-            } else if (request.GetArg("edge") == "min") {
-                min_speed = std::stoi(request.GetArg("value"));
+            } else if (json["edge"].As<std::string>() == "min") {
+                min_speed = json["value"].As<int>();
                 min_speed = std::min(max_speed, min_speed);
             } else {
-                request.SetResponseStatus(server::http::HttpStatus::kBadRequest);
+                throw std::runtime_error("incorrect query");
             }
-        } else if (request.GetArg("type") == "view_range") {
-            view_range = std::stoi(request.GetArg("value"));
-        } else if (request.GetArg("type") == "interval_car_spawn_l") {
-            interval_car_spawn_l = std::stoi(request.GetArg("value"));
-        } else if (request.GetArg("type") == "interval_car_spawn_r") {
-            interval_car_spawn_r = std::stoi(request.GetArg("value"));
-        } else if (request.GetArg("type") == "interval_car_spawn_d") {
-            interval_car_spawn_d = std::stoi(request.GetArg("value"));
-        } else if (request.GetArg("type") == "interval_car_spawn_u") {
-            interval_car_spawn_u = std::stoi(request.GetArg("value"));
+        } else if (json["type"].As<std::string>() == "view_range") {
+            view_range = json["value"].As<int>();
+        } else if (json["type"].As<std::string>() == "interval_car_spawn_l") {
+            interval_car_spawn_l = json["value"].As<int>();
+        } else if (json["type"].As<std::string>() == "interval_car_spawn_r") {
+            interval_car_spawn_r = json["value"].As<int>();
+        } else if (json["type"].As<std::string>() == "interval_car_spawn_d") {
+            interval_car_spawn_d = json["value"].As<int>();
+        } else if (json["type"].As<std::string>() == "interval_car_spawn_u") {
+            interval_car_spawn_u = json["value"].As<int>();
         } else {
-            request.SetResponseStatus(server::http::HttpStatus::kBadRequest);
+            throw std::runtime_error("incorrect query");
         }
+        req.GetHttpResponse().SetStatus(server::http::HttpStatus::kOk);
+        req.GetHttpResponse().SetHeader(std::string("Access-Control-Allow-Origin"), std::string("*"));
+        req.GetHttpResponse().SetHeader(std::string("Access-Control-Allow-Headers"), std::string("Authorization, Content-Type"));
+
 
         formats::json::ValueBuilder builder;
-        builder["cur_light_time_lu"] = cur_light_time_lu;
-        builder["cur_light_time_ld"] = cur_light_time_ld;
-        builder["cur_light_time_ru"] = cur_light_time_ru;
-        builder["cur_light_time_rd"] = cur_light_time_rd;
+        builder["cur_light_time_yellow"] = cur_light_time_yellow;
+        builder["cur_light_time_green"] = cur_light_time_green;
+        builder["cur_light_time_red"] = cur_light_time_red;
         builder["interval_car_spawn_l"] = interval_car_spawn_l;
         builder["interval_car_spawn_r"] = interval_car_spawn_r;
         builder["interval_car_spawn_d"] = interval_car_spawn_d;
@@ -83,6 +89,6 @@ public:
         builder["min_speed"] = min_speed;
         builder["view_range"] = view_range;
         builder["cur_adaptivness_light_time"] = cur_adaptivness_light_time;
-        return ToString(builder.ExtractValue());
+        return builder.ExtractValue();
     }
 };

@@ -47,7 +47,6 @@ const Home = () => {
         crossroadImage.src = crossroadPath;
         const carImage = new Image();
         carImage.src = carPath;
-        console.log(resp.current.left_down_light_color);
         if (resp.current === null || resp.current.cars === undefined) return;
         ctx.clearRect(0, 0, 1498, 723);
         ctx.drawImage(crossroadImage, 0, 0);
