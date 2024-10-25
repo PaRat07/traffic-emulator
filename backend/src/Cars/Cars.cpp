@@ -429,4 +429,87 @@ void Cars::UpdateAngels() {
         new_down[0].push_back(car);
     }
     down = new_down;
+
+    std::vector<std::vector<Car>> new_left(2);
+
+    for (auto &car : left[1]) {
+        if (car.car_turn == CarSettings::Turn::Right) {
+            if (car.car_settings.position_x < WindowSettings::left_stop_line &&
+                car.car_settings.position_x > WindowSettings::WINDOW_X / 2 + 90) {
+                car.car_settings.angle -= (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 + 90)
+                                                 - WindowSettings::left_stop_line);
+                car.car_settings.position_y -= 25 / car.car_settings.speed;
+            } else if (car.car_settings.position_x < WindowSettings::WINDOW_X / 2 + 90) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Up;
+                car.car_settings.angle = 180.0;
+                up[1].push_back(car);
+                continue;
+            }
+        }
+        new_left[1].push_back(car);
+    }
+
+    for (auto &car : left[0]) {
+        if (car.car_turn == CarSettings::Turn::Left) {
+            if (car.car_settings.position_x < WindowSettings::left_stop_line &&
+                car.car_settings.position_x > WindowSettings::WINDOW_X / 2 - 40) {
+                car.car_settings.angle += (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 - 40)
+                                                 - WindowSettings::left_stop_line);
+                car.car_settings.position_y += 40 / car.car_settings.speed;
+            } else if (car.car_settings.position_x < WindowSettings::WINDOW_X / 2 - 40) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Down;
+                car.car_settings.angle = 0.0;
+                down[0].push_back(car);
+                continue;
+            }
+        }
+        new_left[0].push_back(car);
+    }
+    left = new_left;
+
+    std::vector<std::vector<Car>> new_right(2);
+
+    for (auto &car : right[1]) {
+        if (car.car_turn == CarSettings::Turn::Right) {
+            if (car.car_settings.position_x > WindowSettings::right_stop_line &&
+                car.car_settings.position_x < WindowSettings::WINDOW_X / 2 - 100) {
+                car.car_settings.angle += (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 - 100)
+                                                 - WindowSettings::right_stop_line);
+                car.car_settings.position_y += 25 / car.car_settings.speed;
+            } else if (car.car_settings.position_x > WindowSettings::WINDOW_X / 2 - 100) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Down;
+                car.car_settings.angle = 0.0;
+                down[1].push_back(car);
+                continue;
+            }
+        }
+        new_right[1].push_back(car);
+    }
+
+    for (auto &car : right[0]) {
+        if (car.car_turn == CarSettings::Turn::Left) {
+            if (car.car_settings.position_x > WindowSettings::right_stop_line &&
+                car.car_settings.position_x < WindowSettings::WINDOW_X / 2 + 30) {
+                car.car_settings.angle -= (90.0 * (double)car.car_settings.speed) /
+                                          double((WindowSettings::WINDOW_X / 2 + 30)
+                                                 - WindowSettings::right_stop_line);
+                car.car_settings.position_y -= 40 / car.car_settings.speed;
+            } else if (car.car_settings.position_x > WindowSettings::WINDOW_X / 2 + 30) {
+                car.car_turn = CarSettings::Turn::None;
+                car.car_direction = CarSettings::Direction::Up;
+                car.car_settings.angle = 180.0;
+                up[0].push_back(car);
+                continue;
+            }
+        }
+        new_right[0].push_back(car);
+    }
+    right = new_right;
+
 }
