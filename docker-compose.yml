@@ -3,6 +3,7 @@ services:
     build: backend/
     ports:
       - 1234:1234
+    command: ./test_backend_traffic_emulator -c ./config_dev.yaml
   frontend:
     build: frontend/
     ports:

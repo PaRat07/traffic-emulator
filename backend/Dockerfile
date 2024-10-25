@@ -1,15 +1,9 @@
-FROM ubuntu:latest
-RUN apt update && apt -y upgrade && apt install -y build-essential cmake tar wget curl zip git pkg-config ninja-build
-WORKDIR /home
-RUN wget -O /tmp/vcpkg.tar.gz https://github.com/microsoft/vcpkg/archive/master.tar.gz
-RUN tar xf /tmp/vcpkg.tar.gz -C /opt
-RUN /opt/vcpkg-master/bootstrap-vcpkg.sh
-RUN ln -s /opt/vcpkg-master/vcpkg /usr/local/bin/vcpkg
-COPY ./vcpkg.json ./vcpkg-configuration.json .
-RUN vcpkg install
+FROM ghcr.io/userver-framework/ubuntu-22.04-userver-pg:latest
+RUN apt update
+RUN apt upgrade -y
+RUN apt install -y build-essential cmake tar wget curl zip git pkg-config ninja-build
+RUN apt install -y gdb mold
+WORKDIR /app
 COPY . .
-RUN mkdir ./build
-WORKDIR ./build
-RUN cmake .. -DCMAKE_TOOLCHAIN_FILE=/opt/vcpkg-master/scripts/buildsystems/vcpkg.cmake -G Ninja
+RUN cmake . -G Ninja
 RUN cmake --build .
-CMD /home/build/test_backend_traffic_emulator
