@@ -7,7 +7,7 @@
 
 #include "../Cars/Cars.h"
 #include "../Random.h"
-#include "../TrafficLight/TrafficLight.h"
+#include "../TrafficLight/TrafficLights.h"
 #include "../Process/UpdateLights.h"
 
 static auto beg_time = std::chrono::steady_clock::now();
@@ -27,7 +27,7 @@ void CAR() {
     }
     RoadCars.Update();
     if (Random::mt() % 100 > 94) {
-        RoadCars.CreateRandomCar(WINDOW_X, WINDOW_Y);
+        RoadCars.CreateRandomCar();
     }
 }
 
@@ -55,12 +55,12 @@ std::string GetCars() {
     }
     res += "],";
     res += R"(
-    "left_up_light_color" : ")" + TrafficLight::left_up_light.get_light_color()
+    "left_up_light_color" : ")" + TrafficLights::left_up_light.get_light_color()
     + R"(",
-    "left_down_light_color" : ")" + TrafficLight::left_down_light.get_light_color()
+    "left_down_light_color" : ")" + TrafficLights::left_down_light.get_light_color()
     + R"(",
-    "right_up_light_color" : ")" + TrafficLight::right_up_light.get_light_color() + R"(",
-    "right_down_light_color" : ")" + TrafficLight::right_down_light.get_light_color()
+    "right_up_light_color" : ")" + TrafficLights::right_up_light.get_light_color() + R"(",
+    "right_down_light_color" : ")" + TrafficLights::right_down_light.get_light_color()
     + R"(" } )";
     // std::cout << res << '\n';
     CAR();

@@ -9,15 +9,15 @@
 #include <sstream>
 
 #include "handlers/cars_handler.h"
-
-
+#include "handlers/settings.h"
 
 
 int main(int argc, char* argv[]) {
     using namespace CarSettings;
 
     auto component_list = userver::components::MinimalServerComponentList()
-                            .Append<WebsocketsHandler>();
+                            .Append<WebsocketsHandler>()
+                            .Append<SettingsHandler>();
 
     return userver::utils::DaemonMain(argc, argv, component_list);
 }

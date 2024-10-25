@@ -16,9 +16,20 @@ import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-enum TrafficLightMode {
-    STATIC = 'STATIC',
-    DYNAMIC = 'DYNAMIC'
+
+interface Settings {
+    cur_light_time_lu: number,
+    cur_light_time_ld: number,
+    cur_light_time_ru: number,
+    cur_light_time_rd: number,
+    interval_car_spawn_l: number,
+    interval_car_spawn_r: number,
+    interval_car_spawn_d: number,
+    interval_car_spawn_u: number,
+    max_speed: number,
+    min_speed: number,
+    view_range: number
+    cur_adaptivness_light_time: Boolean
 }
 
 const Settings = () => {
@@ -27,23 +38,13 @@ const Settings = () => {
     // const { themeMode } = useContext(ThemeModeContext);
     // const light = themeScheme[themeMode];
 
-    const [lightMode, setLightMode] = useState<TrafficLightMode>(TrafficLightMode.STATIC);
-    const [spawningPeriod, setSpawningPeriod] = useState<number>(3);
-    const [redTime, setRedTime] = useState<number>(3);
-    const [yellowTime, setYellowTime] = useState<number>(3);
-    const [greenTime, setGreenTime] = useState<number>(3);
-    const [visionDist, setVisionDist] = useState<number>(3);
-    const [minSpeed, setMinSpeed] = useState<number>(3);
-    const [maxSpeed, setMaxSpeed] = useState<number>(3);
-
-    // const [alignment, setAlignment] = useState<string | null>('dynamic');
-    //
-    // const handleAlignment = (
-    //     _event: React.MouseEvent<HTMLElement>,
-    //     newAlignment: string | null,
-    // ) => {
-    //     setAlignment(newAlignment);
-    // };
+    const [sets, setSets] = useState<Settings>();
+    const setLightMode = (value: Boolean) {
+        if (sets === undefined) return;
+        let copy = sets;
+        copy.cur_adaptivness_light_time = value;
+        setSets(copy);
+    }
 
     return (
         <>
@@ -52,13 +53,13 @@ const Settings = () => {
                     <Typography variant="h6" fontWeight="bold">
                         Traffic light mode
                     </Typography>
-                    <ToggleButtonGroup exclusive value={lightMode} onChange={ () => { setLightMode(lightMode === TrafficLightMode.STATIC ? TrafficLightMode.DYNAMIC : TrafficLightMode.STATIC); }}>
-                        <ToggleButton value={TrafficLightMode.STATIC}>
-                            {lightMode === TrafficLightMode.STATIC ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
+                    <ToggleButtonGroup exclusive value={sets?.cur_adaptivness_light_time} onChange={ () => { setLightMode(!sets?.cur_adaptivness_light_time); }}>
+                        <ToggleButton value={false}>
+                            {!sets?.cur_adaptivness_light_time ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
                             Static
                         </ToggleButton>
-                        <ToggleButton value={TrafficLightMode.DYNAMIC}>
-                            {lightMode === TrafficLightMode.DYNAMIC ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
+                        <ToggleButton value={true}>
+                            {!sets?.cur_adaptivness_light_time ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
                             Dynamic
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -69,7 +70,7 @@ const Settings = () => {
                             Time of the red light
                         </Typography>
                         <Stack direction="row" spacing={2}>
-                            <Typography variant="h6" fontWeight={ lightMode === TrafficLightMode.STATIC ? "bold" : "lighter" }>
+                            <Typography variant="h6" fontWeight={ !sets?.cur_adaptivness_light_time ? "bold" : "lighter" }>
                                 { redTime }
                             </Typography>
                             <FormControlLabel disabled={ lightMode === TrafficLightMode.DYNAMIC } control={
