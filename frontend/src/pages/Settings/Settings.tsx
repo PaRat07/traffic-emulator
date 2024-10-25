@@ -16,35 +16,216 @@ import CheckIcon from "@mui/icons-material/Check";
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 
-enum TrafficLightMode {
-    STATIC = 'STATIC',
-    DYNAMIC = 'DYNAMIC'
+
+interface Settings {
+    cur_light_time_yellow: number,
+    cur_light_time_green: number,
+    cur_light_time_red: number,
+    interval_car_spawn_l: number,
+    interval_car_spawn_r: number,
+    interval_car_spawn_d: number,
+    interval_car_spawn_u: number,
+    max_speed: number,
+    min_speed: number,
+    view_range: number,
+    cur_adaptivness_light_time: boolean
 }
 
 const Settings = () => {
-
-    // const { themeScheme } = useContext(ThemeSchemeContext);
-    // const { themeMode } = useContext(ThemeModeContext);
-    // const light = themeScheme[themeMode];
-
-    const [lightMode, setLightMode] = useState<TrafficLightMode>(TrafficLightMode.STATIC);
-    const [spawningPeriod, setSpawningPeriod] = useState<number>(3);
-    const [redTime, setRedTime] = useState<number>(3);
-    const [yellowTime, setYellowTime] = useState<number>(3);
-    const [greenTime, setGreenTime] = useState<number>(3);
-    const [visionDist, setVisionDist] = useState<number>(3);
-    const [minSpeed, setMinSpeed] = useState<number>(3);
-    const [maxSpeed, setMaxSpeed] = useState<number>(3);
-
-    // const [alignment, setAlignment] = useState<string | null>('dynamic');
-    //
-    // const handleAlignment = (
-    //     _event: React.MouseEvent<HTMLElement>,
-    //     newAlignment: string | null,
-    // ) => {
-    //     setAlignment(newAlignment);
-    // };
-
+    const [sets, setSets] = useState<Settings>();
+    const setLightMode = (value: Boolean) => {
+        (async () => {
+            setSets((await (await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "adaptive_light_time",
+                        value: value
+                    })
+                })
+            ).json()));
+        }) ();
+    };
+    const setRedTime = (value: number) => {
+        (async () => {
+            setSets((await (await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "light_time",
+                        which_light: "red",
+                        value: value
+                    })
+                }
+            )).json()));
+            console.log(value);
+        }) ();
+    }
+    const setGreenTime = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "light_time",
+                        which_light: "green",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setYellowTime = (value: number) => {
+        if (sets === undefined) return;
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "light_time",
+                        which_light: "yellow",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setSpawningPeriodL = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "interval_car_spawn_l",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setSpawningPeriodR = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "interval_car_spawn_r",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setSpawningPeriodD = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "interval_car_spawn_d",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setSpawningPeriodU = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "interval_car_spawn_u",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setVisionDist = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "view_range",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setMinSpeed = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "speed",
+                        edge: "min",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    const setMaxSpeed = (value: number) => {
+        (async () => {
+            setSets((await (await (
+                await fetch("http://localhost:1234/set", {
+                    method: 'POST',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        type : "speed",
+                        edge: "max",
+                        value: value
+                    })
+                })
+            )).json()) as Settings);
+        }) ();
+    }
+    
     return (
         <>
             <Stack direction="column" spacing={7}>
@@ -52,13 +233,13 @@ const Settings = () => {
                     <Typography variant="h6" fontWeight="bold">
                         Traffic light mode
                     </Typography>
-                    <ToggleButtonGroup exclusive value={lightMode} onChange={ () => { setLightMode(lightMode === TrafficLightMode.STATIC ? TrafficLightMode.DYNAMIC : TrafficLightMode.STATIC); }}>
-                        <ToggleButton value={TrafficLightMode.STATIC}>
-                            {lightMode === TrafficLightMode.STATIC ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
+                    <ToggleButtonGroup exclusive value={sets?.cur_adaptivness_light_time} onChange={ () => { setLightMode(!(sets?.cur_adaptivness_light_time??true)); }}>
+                        <ToggleButton value={false}>
+                            {!sets?.cur_adaptivness_light_time ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
                             Static
                         </ToggleButton>
-                        <ToggleButton value={TrafficLightMode.DYNAMIC}>
-                            {lightMode === TrafficLightMode.DYNAMIC ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
+                        <ToggleButton value={true}>
+                            {sets?.cur_adaptivness_light_time ? <CheckIcon sx={{ mr: 1 }} /> : <></>}
                             Dynamic
                         </ToggleButton>
                     </ToggleButtonGroup>
@@ -69,18 +250,19 @@ const Settings = () => {
                             Time of the red light
                         </Typography>
                         <Stack direction="row" spacing={2}>
-                            <Typography variant="h6" fontWeight={ lightMode === TrafficLightMode.STATIC ? "bold" : "lighter" }>
-                                { redTime }
+                            <Typography variant="h6" fontWeight={ !sets?.cur_adaptivness_light_time ? "bold" : "lighter" }>
+                                { sets?.cur_light_time_red }
                             </Typography>
-                            <FormControlLabel disabled={ lightMode === TrafficLightMode.DYNAMIC } control={
+                            <FormControlLabel disabled={ !!sets?.cur_adaptivness_light_time } control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setRedTime(Math.max(redTime - 1, 1));
+                                        setRedTime(Math.max((sets?.cur_light_time_red??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setRedTime(redTime + 1);
+
+                                        setRedTime((sets?.cur_light_time_red??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -93,18 +275,18 @@ const Settings = () => {
                             Time of the yellow light
                         </Typography>
                         <Stack direction="row" spacing={2}>
-                            <Typography variant="h6" fontWeight={ lightMode === TrafficLightMode.STATIC ? "bold" : "lighter" }>
-                                { yellowTime }
+                            <Typography variant="h6" fontWeight={ !!sets?.cur_adaptivness_light_time ? "bold" : "lighter" }>
+                                { sets?.cur_light_time_yellow }
                             </Typography>
-                            <FormControlLabel disabled={ lightMode === TrafficLightMode.DYNAMIC } control={
+                            <FormControlLabel disabled={ !!sets?.cur_adaptivness_light_time } control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setYellowTime(Math.max(yellowTime - 1, 1));
+                                        setYellowTime(Math.max((sets?.cur_light_time_yellow??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setYellowTime(yellowTime + 1);
+                                        setYellowTime((sets?.cur_light_time_yellow??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -117,18 +299,18 @@ const Settings = () => {
                             Time of the green light
                         </Typography>
                         <Stack direction="row" spacing={2}>
-                            <Typography variant="h6" fontWeight={ lightMode === TrafficLightMode.STATIC ? "bold" : "lighter" }>
-                                { greenTime }
+                            <Typography variant="h6" fontWeight={ !!sets?.cur_adaptivness_light_time ? "bold" : "lighter" }>
+                                { sets?.cur_light_time_green }
                             </Typography>
-                            <FormControlLabel disabled={ lightMode === TrafficLightMode.DYNAMIC } control={
+                            <FormControlLabel disabled={ !!sets?.cur_adaptivness_light_time } control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setGreenTime(Math.max(greenTime - 1, 1));
+                                        setGreenTime(Math.max((sets?.cur_light_time_green??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setGreenTime(greenTime + 1);
+                                        setGreenTime((sets?.cur_light_time_green??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -138,21 +320,87 @@ const Settings = () => {
                     </Stack>
                 </Stack>
                 <Typography variant="h6" fontWeight="bold">
-                    Period of spawning the new cars
+                    Period of spawning the new cars on the left
                 </Typography>
                 <Stack direction="row" spacing={2}>
                     <Typography variant="h6" fontWeight="bold">
-                        { spawningPeriod }
+                        { sets?.interval_car_spawn_l }
                     </Typography>
-                    <FormControlLabel disabled={ spawningPeriod === 2 } control={
+                    <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriod(Math.max(spawningPeriod - 1, 1));
+                                setSpawningPeriodL(Math.max((sets?.interval_car_spawn_l??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setSpawningPeriod(spawningPeriod + 1);
+                                setSpawningPeriodL((sets?.interval_car_spawn_l??0) + 1);
+                            }}>
+                                <AddIcon fontSize='small' />
+                            </Button>
+                        </ButtonGroup>
+                    }/>
+                </Stack>
+                <Typography variant="h6" fontWeight="bold">
+                    Period of spawning the new cars on the right
+                </Typography>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="h6" fontWeight="bold">
+                        { sets?.interval_car_spawn_r }
+                    </Typography>
+                    <FormControlLabel control={
+                        <ButtonGroup size='small'>
+                            <Button size='small' onClick={() => {
+                                setSpawningPeriodR(Math.max((sets?.interval_car_spawn_r??0) - 1, 1));
+                            }}>
+                                <RemoveIcon fontSize='small' />
+                            </Button>
+                            <Button size='small' onClick={() => {
+                                setSpawningPeriodR((sets?.interval_car_spawn_r??0) + 1);
+                            }}>
+                                <AddIcon fontSize='small' />
+                            </Button>
+                        </ButtonGroup>
+                    }/>
+                </Stack>
+                <Typography variant="h6" fontWeight="bold">
+                    Period of spawning the new cars on the up
+                </Typography>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="h6" fontWeight="bold">
+                        { sets?.interval_car_spawn_u }
+                    </Typography>
+                    <FormControlLabel control={
+                        <ButtonGroup size='small'>
+                            <Button size='small' onClick={() => {
+                                setSpawningPeriodU(Math.max((sets?.interval_car_spawn_u??0) - 1, 1));
+                            }}>
+                                <RemoveIcon fontSize='small' />
+                            </Button>
+                            <Button size='small' onClick={() => {
+                                setSpawningPeriodU((sets?.interval_car_spawn_u??0) + 1);
+                            }}>
+                                <AddIcon fontSize='small' />
+                            </Button>
+                        </ButtonGroup>
+                    }/>
+                </Stack>
+                <Typography variant="h6" fontWeight="bold">
+                    Period of spawning the new cars on the down
+                </Typography>
+                <Stack direction="row" spacing={2}>
+                    <Typography variant="h6" fontWeight="bold">
+                        { sets?.interval_car_spawn_d }
+                    </Typography>
+                    <FormControlLabel control={
+                        <ButtonGroup size='small'>
+                            <Button size='small' onClick={() => {
+                                setSpawningPeriodD(Math.max((sets?.interval_car_spawn_d??0) - 1, 1));
+                            }}>
+                                <RemoveIcon fontSize='small' />
+                            </Button>
+                            <Button size='small' onClick={() => {
+                                setSpawningPeriodD((sets?.interval_car_spawn_d??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -164,17 +412,17 @@ const Settings = () => {
                 </Typography>
                 <Stack direction="row" spacing={2}>
                     <Typography variant="h6" fontWeight="bold">
-                        { visionDist }
+                        { sets?.view_range }
                     </Typography>
                     <FormControlLabel control={
                         <ButtonGroup size='small'>
                             <Button size='small' onClick={() => {
-                                setVisionDist(Math.max(visionDist - 1, 1));
+                                setVisionDist(Math.max((sets?.view_range??0) - 1, 1));
                             }}>
                                 <RemoveIcon fontSize='small' />
                             </Button>
                             <Button size='small' onClick={() => {
-                                setVisionDist(visionDist + 1);
+                                setVisionDist((sets?.view_range??0) + 1);
                             }}>
                                 <AddIcon fontSize='small' />
                             </Button>
@@ -188,17 +436,17 @@ const Settings = () => {
                         </Typography>
                         <Stack direction="row" spacing={2}>
                             <Typography variant="h6" fontWeight="bold">
-                                { minSpeed }
+                                { sets?.min_speed??0 }
                             </Typography>
                             <FormControlLabel control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setMinSpeed(Math.max(minSpeed - 1, 1));
+                                        setMinSpeed(Math.max((sets?.min_speed??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setMinSpeed(minSpeed + 1);
+                                        setMinSpeed((sets?.min_speed??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
@@ -206,23 +454,24 @@ const Settings = () => {
                             }/>
                         </Stack>
                     </Stack>
+
                     <Stack direction="column" spacing={2}>
                         <Typography variant="h6" fontWeight="bold">
                             Maximal speed
                         </Typography>
                         <Stack direction="row" spacing={2}>
                             <Typography variant="h6" fontWeight="bold">
-                                { maxSpeed }
+                                { sets?.max_speed }
                             </Typography>
                             <FormControlLabel control={
                                 <ButtonGroup size='small'>
                                     <Button size='small' onClick={() => {
-                                        setMaxSpeed(Math.max(maxSpeed - 1, 1));
+                                        setMaxSpeed(Math.max((sets?.max_speed??0) - 1, 1));
                                     }}>
                                         <RemoveIcon fontSize='small' />
                                     </Button>
                                     <Button size='small' onClick={() => {
-                                        setMaxSpeed(maxSpeed + 1);
+                                        setMaxSpeed((sets?.max_speed??0) + 1);
                                     }}>
                                         <AddIcon fontSize='small' />
                                     </Button>
