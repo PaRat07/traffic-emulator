@@ -4,46 +4,6 @@ import CheckIcon from '@mui/icons-material/Check';
 import crossroadPath from '../../assets/BigCrossRoad.jpeg'
 import carPath from '../../assets/Car.png'
 
-const throttle = (fn: Function, wait: number = 300) => {
-    let inThrottle: boolean,
-      lastFn: ReturnType<typeof setTimeout>,
-      lastTime: number;
-    return function (this: any) {
-      const context = this,
-        args = arguments;
-      if (!inThrottle) {
-        fn.apply(context, args);
-        lastTime = Date.now();
-        inThrottle = true;
-      } else {
-        clearTimeout(lastFn);
-        lastFn = setTimeout(() => {
-          if (Date.now() - lastTime >= wait) {
-            fn.apply(context, args);
-            lastTime = Date.now();
-          }
-        }, Math.max(wait - (Date.now() - lastTime), 0));
-      }
-    };
-  };
-
-interface Pos {
-    x: number,
-    y: number
-}
-
-interface Car {
-    pos: Pos,
-    direction: number,
-}
-
-interface Response {
-    cars: Car[],
-    left_up_light_color: "red" | "yellow" | "green",
-    left_down_light_color: "red" | "yellow" | "green",
-    right_up_light_color: "red" | "yellow" | "green",
-    right_down_light_color: "red" | "yellow" | "green"
-}
 
 interface Pos {
     x: number,
@@ -79,7 +39,7 @@ const Home = () => {
 
     const [canvas, setCanvas] = useState<HTMLCanvasElement>();
 
-    const redrawRaw = async () => {
+    useEffect(() => {
         if (canvas == null) return;
         const ctx = canvas.getContext("2d");
         if (ctx === null) return;
