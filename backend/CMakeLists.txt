@@ -24,6 +24,7 @@ add_executable(${PROJECT_NAME} main.cpp
         src/Process/UpdateLights.cpp
         UserSettings/WindowSettings.h
         src/UserSettings/WindowSettings.cpp
-        handlers/settings.h)
+        handlers/settings.h
+        handlers/cars_handler.h)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE userver::core)
