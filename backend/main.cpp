@@ -22,7 +22,7 @@ void CAR() {
         last_time = cur;
     }
     RoadCars.Update();
-    if (Random::mt() % 100 > 94) {
+    if (Random::mt() % 100 > 96) {
         RoadCars.CreateRandomCar();
     }
 }
