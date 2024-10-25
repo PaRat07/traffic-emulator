@@ -154,6 +154,7 @@ const Settings = () => {
                 })
             )).json()) as Settings);
         }) ();
+        
     }
     const setSpawningPeriodU = (value: number) => {
         (async () => {
@@ -455,6 +456,7 @@ const Settings = () => {
                             }/>
                         </Stack>
                     </Stack>
+
                     <Stack direction="column" spacing={2}>
                         <Typography variant="h6" fontWeight="bold">
                             Maximal speed
